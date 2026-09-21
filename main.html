@@ -1,0 +1,219 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 3.2 Final//EN">
+<html>
+<head>
+    <title>Main</title>
+</head>
+<body bgcolor="#FFFFFF" text="#000000" link="#B30000" vlink="#550000">
+
+    <!-- SECAO SOBRE -->
+    <a name="sobre"></a>
+    <h2>O Projeto BaseRoot Toybox/Linux</h2>
+    <hr size="2" noshade>
+    <p>
+        O <b>BaseRoot Linux</b> eh uma distribuicao linux x86_64 focada em minimalismo extremo, eficiencia e controle total do usuario. O sistema opera inteiramente atraves de uma interface de modo texto e linha de comando, sem initramfs pesados nem dependencias desnecessarias do espaco de usuario.
+    </p>
+    <p>
+        O projeto engloba nao apenas a distribuicao em si, mas tambem um ecossistema proprio de ferramentas desenvolvidas do zero:
+    </p>
+    <ul>
+        <li><b>BaseRoot Linux</b> -- a distribuicao, construida com musl, toybox e mksh</li>
+        <li><b>dumpkg</b> -- gerenciador de pacotes binarios baseado em receitas (.binfile)</li>
+        <li><b>spkg</b> -- gerenciador de pacotes alternativo, ainda mais minimo, baseado em JSON</li>
+        <li><b>setup</b> -- instalador TUI para instalacao em disco</li>
+    </ul>
+    <p>
+        Tudo escrito em shell POSIX puro, projetado para rodar em qualquer sistema minimo com toybox ou busybox.
+    </p>
+    <br>
+
+    <!-- SECAO NOVIDADES -->
+    <a name="noticias"></a>
+    <h2>Ultimas Novidades</h2>
+    <hr size="2" noshade>
+    
+    <p><b>* 20 de Setembro de 2026 -- BaseRoot Linux 110020092026 Pre-Alpha</b></p>
+    <p>Correcoes de bugs e novo package manager</p>
+    
+    <ul>
+        <li>Essa iso vem com o novo <b>spkg</b>, um gerenciador de pacotes binarios mais minimo que o dumpkg.</li>
+        <li>Alem disso, foram feitas correcoes de bugs nas receitas do dumpkg.</li>
+    </ul>
+
+    <p><b>* 18 de Setembro de 2026 -- BaseRoot Linux 210018092026 Pre-Alpha</b></p>
+    <p>Essa versao Pre-Alpha eh a mais estavel e com mais funcionalidades ate agora:</p>
+    
+    <ul>
+        <li>Kernel Generico Universal integrado com drivers <i>i915</i>, <i>bochs-drm</i> e VGA mode estaveis.</li>
+        <li>Otimizacao de boot removendo o conflito de binding do <i>simplefb</i>.</li>
+        <li>Suporte nativo a <b>USB Tethering</b> para conexoes de rede movel via cabo.</li>
+        <li>Remocao do suporte aos drivers <i>Nouveau</i> e <i>AMDGPU</i> para deixar o sistema mais leve e estavel.</li>
+    </ul>
+
+    <p><b>* 18 de Setembro de 2026 -- BaseRoot Linux 160018092026 Pre-Alpha</b></p>
+    <p>Um update muito importante, com uma novidade extremamente util:</p>
+    
+    <ul>
+        <li>Um novo <b>Instalador TUI</b> para facilitar a instalacao do sistema.</li>
+    </ul>
+
+    <p><b>* 16 de Setembro de 2026 -- BaseRoot Linux 200016092026 Pre-Alpha</b></p>
+    <p>Essa versao traz varias funcionalidades novas em relacao as anteriores:</p>
+    
+    <ul>
+        <li>Setup do <b>DHCP automatico</b> usando <code>ip link set $INTERFACE up && dhcp -i $INTERFACE</code>.</li>
+        <li>Novo shell mais pratico incluido, <i>mksh</i>.</li>
+        <li>Remocao do suporte aos drivers <i>Nouveau</i> e <i>AMDGPU</i> para deixar o sistema mais leve e estavel.</li>
+    </ul>
+
+    <p><b>* Existiam versoes anteriores, porem nao foram salvas e nao estao disponiveis.</b></p>
+    <ul>
+        <li>Tais versoes nao tinham as novas funcionalidades da versao 160016092026.</li>
+    </ul>
+    <br>
+
+    <!-- SECAO PROJETOS -->
+    <a name="baseroot"></a>
+    <h2>BaseRoot Linux</h2>
+    <hr size="2" noshade>
+    <p>
+        O <b>BaseRoot Linux</b> eh uma distribuicao minimalista x86_64 construida do zero com <b>musl libc</b>, <b>toybox</b> e <b>mksh</b>. 
+        O sistema utiliza o bootloader <b>Limine</b> com suporte a UEFI, e o init system <b>sinit</b>.
+        O gerenciamento de pacotes eh feito pelo <b>dumpkg</b>, incluido na instalacao base.
+    </p>
+    <p><b>Componentes principais:</b></p>
+    <ul>
+        <li>Kernel Linux 6.1 LTS (LTS) com drivers i915, bochs-drm e suporte a USB Tethering</li>
+        <li>musl libc 1.2.6</li>
+        <li>toybox 0.8.11</li>
+        <li>mksh como shell padrao</li>
+        <li>sinit como init system</li>
+        <li>LibreSSL + libretls para suporte a HTTPS</li>
+        <li>Dropbear para acesso SSH</li>
+        <li>Limine como bootloader (UEFI)</li>
+        <li>dumpkg como gerenciador de pacotes</li>
+    </ul>
+    <br>
+
+    <a name="dumpkg"></a>
+    <h2>DUMPKG</h2>
+    <hr size="2" noshade>
+    <p>
+        O <b>dumpkg</b> eh um gerenciador de pacotes binarios minimalista escrito em shell POSIX puro.
+        Funciona atraves de receitas (<i>.binfile</i>) com informacoes do pacote, URL de download e checksum.
+        Nao resolve dependencias automaticamente por padrao, mas oferece a flag <code>-d</code> para instalacao com dependencias.
+    </p>
+    <p><b>Principais funcionalidades:</b></p>
+    <ul>
+        <li><code>dumpkg-install &lt;pkg&gt;</code> -- instala um ou mais pacotes</li>
+        <li><code>dumpkg-install -d &lt;pkg&gt;</code> -- instala com dependencias</li>
+        <li><code>dumpkg-remove &lt;pkg&gt;</code> -- remove um ou mais pacotes</li>
+        <li><code>dumpkg-update</code> -- sincroniza receitas e atualiza pacotes</li>
+        <li><code>dumpkg list</code> -- lista pacotes instalados</li>
+        <li><code>dumpkg search &lt;pkg&gt;</code> -- pesquisa no repositorio</li>
+        <li><code>dumpkg deptree &lt;pkg&gt;</code> -- exibe arvore de dependencias</li>
+        <li><code>dumpkg verify &lt;pkg&gt;</code> -- verifica integridade dos arquivos</li>
+    </ul>
+    <p>
+        Codigo-fonte disponivel em: <a href="https://www.github.com/LuuunodotXD/Dump-Package-Manager" target="_blank">www.github.com/LuuunodotXD/Dump-Package-Manager</a>
+    </p>
+    <br>
+
+    <a name="spkg"></a>
+    <h2>spkg</h2>
+    <hr size="2" noshade>
+    <p>
+        O <b>spkg</b> eh um gerenciador de pacotes alternativo e ainda mais simples, compativel com o shell do toybox.
+        Usa um repositorio no formato <b>JSON</b> e nao depende de receitas -- apenas uma lista de pacotes com nome, versao e link de download.
+    </p>
+    <p><b>Comandos:</b></p>
+    <ul>
+        <li><code>spkg sync</code> -- sincroniza o repositorio</li>
+        <li><code>spkg add &lt;pkg&gt;</code> -- instala um ou mais pacotes</li>
+        <li><code>spkg del &lt;pkg&gt;</code> -- remove um ou mais pacotes</li>
+        <li><code>spkg up</code> -- atualiza todos os pacotes</li>
+        <li><code>spkg list</code> -- lista pacotes instalados</li>
+    </ul>
+    <br>
+
+    <a name="installer"></a>
+    <h2>Setup</h2>
+    <hr size="2" noshade>
+    <p>
+        O <b>setup</b> eh o instalador TUI do BaseRoot Linux. Ele guia o usuario pelo processo de instalacao de forma simples e direta, sem particionar o disco -- o usuario monta as particoes manualmente antes de rodar o instalador.
+    </p>
+    <p><b>O que o instalador faz:</b></p>
+    <ul>
+        <li>Pergunta o ponto de montagem do sistema (<code>/</code>)</li>
+        <li>Pergunta se ha particao <code>/home</code> e <code>swap</code> separadas</li>
+        <li>Detecta automaticamente se o sistema usa UEFI ou BIOS</li>
+        <li>Extrai os grupos de pacotes selecionados pelo usuario</li>
+        <li>Configura o <b>fstab</b> e o <b>limine.conf</b> automaticamente</li>
+        <li>Instala o bootloader Limine na particao correta</li>
+    </ul>
+    <br>
+
+    <!-- SECAO DOWNLOADS -->
+    <a name="download"></a>
+    <h3>Como baixar a iso e testar:</h3>
+    
+    <table width="100%" bgcolor="#FAFAFA" border="2" cellpadding="8" cellspacing="0">
+        <tr>
+            <td>
+                <p>Para baixar a <b>iso mais recente</b> <i>versao 110020092026</i> do BaseRoot Linux, acesse o link abaixo:</p>
+                <pre><a href="https://drive.google.com/file/d/1sIHYdMdfsXEkPS6g2lhgruAy3hrG-KYZ/view?usp=sharing" target="_blank">www.drive.google.com/file/d/1sIHYdMdfsXEkPS6g2lhgruAy3hrG-KYZ/view?usp=sharing</a></pre>
+            </td>
+        </tr>
+    </table>
+
+    <table width="100%" bgcolor="#FAFAFA" border="2" cellpadding="8" cellspacing="0">
+        <tr>
+            <td>
+                <p>Para baixar a iso <i>antiga versao 210018092026</i> do BaseRoot Linux, acesse o link abaixo:</p>
+                <pre><a href="https://drive.google.com/file/d/1-ku8dWWYjZuUldbRoNGFpq_ZkcejGJk3/view?usp=sharing" target="_blank">www.drive.google.com/file/d/1-ku8dWWYjZuUldbRoNGFpq_ZkcejGJk3/view?usp=sharing</a></pre>
+            </td>
+        </tr>
+    </table>
+
+    <table width="100%" bgcolor="#FAFAFA" border="2" cellpadding="8" cellspacing="0">
+        <tr>
+            <td>
+                <p>Para baixar a iso <i>antiga versao 160018092026</i> do BaseRoot Linux, acesse o link abaixo:</p>
+                <pre><a href="https://drive.google.com/file/d/1YyZHioH73the32gmuZngGwNZ3J8Ita4-/view?usp=sharing" target="_blank">www.drive.google.com/file/d/1YyZHioH73the32gmuZngGwNZ3J8Ita4-/view?usp=sharing</a></pre>
+            </td>
+        </tr>
+    </table>
+
+    <table width="100%" bgcolor="#FAFAFA" border="2" cellpadding="8" cellspacing="0">
+        <tr>
+            <td>
+                <p>Para baixar a iso <i>antiga versao 200016092026</i> do BaseRoot Linux, acesse o link abaixo:</p>
+                <pre><a href="https://drive.google.com/file/d/1FTaIwzSZWg-cJ6E7mePsYIXJ1-mFQnf9/view?usp=sharing" target="_blank">www.drive.google.com/file/d/1FTaIwzSZWg-cJ6E7mePsYIXJ1-mFQnf9/view?usp=sharing</a></pre>
+            </td>
+        </tr>
+    </table>
+
+    <br>
+    <a name="fontes"></a>
+    <h3>Codigo-fonte e repositorios:</h3>
+
+    <table width="100%" bgcolor="#FAFAFA" border="2" cellpadding="8" cellspacing="0">
+        <tr>
+            <td><b>dumpkg</b></td>
+            <td><a href="https://www.github.com/LuuunodotXD/Dump-Package-Manager" target="_blank">www.github.com/LuuunodotXD/Dump-Package-Manager</a></td>
+        </tr>
+        <tr>
+            <td><b>Receitas de pacotes (dumpkg)</b></td>
+            <td><a href="https://www.github.com/LuuunodotXD/Dump-Package-Recipes" target="_blank">www.github.com/LuuunodotXD/Dump-Package-Recipes</a></td>
+        </tr>
+        <tr>
+            <td><b>spkg</b></td>
+            <td><a href="https://www.github.com/LuuunodotXD/spkg" target="_blank">www.github.com/LuuunodotXD/spkg</a></td>
+        </tr>
+        <tr>
+            <td><b>Repositorio de binarios (dumpkg e spkg)</b></td>
+            <td><a href="https://www.github.com/LuuunodotXD/Dump-Packages" target="_blank">www.github.com/LuuunodotXD/Dump-Packages</a></td>
+        </tr>
+    </table>
+
+</body>
+</html>
