@@ -36,7 +36,7 @@
     
     <ul>
         <li>Essa iso vem com o novo <b>spkg</b>, um gerenciador de pacotes binarios mais minimo que o dumpkg.</li>
-        <li>Alem disso, foram feitas correcoes de bugs nas receitas do dumpkg.</li>
+        <li>Alem disso, foram feitas correcoes de bugs nas receitas do dumpkg e no setup.</li>
     </ul>
 
     <p><b>* 18 de Setembro de 2026 -- BaseRoot Linux 210018092026 Pre-Alpha</b></p>
@@ -90,7 +90,7 @@
         <li>LibreSSL + libretls para suporte a HTTPS</li>
         <li>Dropbear para acesso SSH</li>
         <li>Limine como bootloader (UEFI)</li>
-        <li>dumpkg como gerenciador de pacotes</li>
+        <li>dumpkg + spkg como gerenciadores de pacotes</li>
     </ul>
     <br>
 
@@ -101,6 +101,7 @@
         O <b>dumpkg</b> eh um gerenciador de pacotes binarios minimalista escrito em shell POSIX puro.
         Funciona atraves de receitas (<i>.binfile</i>) com informacoes do pacote, URL de download e checksum.
         Nao resolve dependencias automaticamente por padrao, mas oferece a flag <code>-d</code> para instalacao com dependencias.
+        Precisa obrigatoriamente do mksh para funcionar, nao sendo compativel com o toysh, ambos ja incluidos.
     </p>
     <p><b>Principais funcionalidades:</b></p>
     <ul>
