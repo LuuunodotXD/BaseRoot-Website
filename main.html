@@ -36,8 +36,8 @@
 
     <ul>
         <li>Com esse update, toda a estrutura de login, grupos e criacao de usuarios estao bem mais solidas.</li>
-        <li>Agora os arquivos <d>/etc/group</d> e <d>/etc/gshadow</d> estão configurados corretamente, alem de outros arquivos.</li>
-        <li>O <d>script para criacao de usuarios</d> esta muito mais sofisticado, gerenciando grupos e usuários ao invés de só criar.</li>
+        <li>Agora os arquivos <d>/etc/group</d> e <d>/etc/gshadow</d> estao configurados corretamente, alem de outros arquivos.</li>
+        <li>O <d>script para criacao de usuarios</d> esta muito mais sofisticado, gerenciando grupos e usuários ao inves de so criar.</li>
         <li>O wrapper de login foi substituido, com uma estrutura bem mais forte com o <d>mksh</d>.</li>
     </ul>
 
@@ -102,8 +102,8 @@
     <hr size="2" noshade>
     <p>
         O <b>BaseRoot Linux</b> eh uma distribuicao minimalista x86_64 construida do zero com <b>musl libc</b>, <b>toybox</b> e <b>mksh</b>. 
-        O sistema utiliza o bootloader <b>Limine</b> com suporte a UEFI, e o init system <b>sinit</b>.
-        O gerenciamento de pacotes eh feito pelo <b>dumpkg</b>, incluido na instalacao base.
+        O sistema utiliza o bootloader <b>Limine</b> com suporte a UEFI, e o init system <b>toybox init</b>.
+        O gerenciamento de pacotes eh feito pelo <b>dumpkg</b> e o <d>spkg</d>, incluido na instalacao base.
     </p>
     <p><b>Componentes principais:</b></p>
     <ul>
