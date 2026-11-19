@@ -1,0 +1,51 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 3.2 Final//EN">
+<html>
+<head>
+    <title>BaseRoot Wiki - SSH</title>
+</head>
+<body bgcolor="#FFFFFF" text="#000000" link="#B30000" vlink="#550000">
+
+    <p><font size="2"><a href="index.html">&lt;&lt; Wiki</a> | <a href="relogio-teclado.html">&lt; Relogio e teclado</a> | <a href="problemas.html">Problemas comuns &gt;</a></font></p>
+    <h2>SSH</h2>
+    <hr size="2" noshade>
+    <p>O BaseRoot inclui o <b>Dropbear</b>, um servidor SSH pequeno. Ele vem <b>desligado</b> por padrao.</p>
+
+    <h3>Ligar</h3>
+    <p>Antes, crie um usuario comum com senha (<code>setup-users</code>): o Dropbear nao aceita contas sem senha, e a conta root da iso nao tem.</p>
+    <pre>service dropbear enable      # liga no boot
+service dropbear start       # liga agora
+service dropbear status</pre>
+
+    <h3>Conectar</h3>
+    <p>De outro computador na mesma rede:</p>
+    <pre>ssh usuario@endereco-do-baseroot</pre>
+    <p>O endereco aparece em <code>ip addr</code>. No <a href="qemu.html">QEMU</a> com rede padrao, encaminhe uma porta do seu computador para a porta 22 da maquina virtual:</p>
+    <pre>qemu-system-x86_64 -m 512 -cdrom baseroot.iso -nic user,hostfwd=tcp::2222-:22</pre>
+    <pre>ssh -p 2222 usuario@localhost</pre>
+
+    <h3>Chaves do servidor</h3>
+    <p>O Dropbear cria as chaves na primeira conexao, em <i>/etc/dropbear</i>. Na iso (que roda na memoria) elas sao geradas de novo a cada boot, e o <code>ssh</code> avisa que a chave mudou. Para testar sem esse aviso:</p>
+    <pre>ssh -o UserKnownHostsFile=/dev/null -o StrictHostKeyChecking=no -p 2222 usuario@localhost</pre>
+    <p>No sistema instalado as chaves ficam no disco e nao mudam.</p>
+
+    <h3>Opcoes</h3>
+    <p>Ficam em <i>/etc/default/dropbear</i>:</p>
+    <pre>DROPBEAR_ARGS="-R"        # padrao: cria as chaves sozinho
+DROPBEAR_ARGS="-R -w"     # proibe o login do root
+DROPBEAR_ARGS="-R -w -s"  # proibe o root e so aceita chave (sem senha)</pre>
+    <p>Depois de mudar, rode <code>service dropbear restart</code>. <b>Cuidado:</b> so use <code>-w</code> depois de ter um usuario comum, senao voce fica sem como entrar.</p>
+
+    <h3>Entrar com chave</h3>
+    <p>No computador de onde voce vai conectar, gere uma chave (<code>ssh-keygen</code>) e copie a parte publica para o BaseRoot:</p>
+    <pre>mkdir -p ~/.ssh
+vi ~/.ssh/authorized_keys     # cole a linha do arquivo .pub
+chmod 700 ~/.ssh
+chmod 600 ~/.ssh/authorized_keys</pre>
+    <p>O Dropbear recusa a chave se a pasta pessoal, o <i>.ssh</i> ou o <i>authorized_keys</i> puderem ser alterados por outros usuarios.</p>
+
+    <hr size="1" noshade>
+    <p><font size="2"><a href="index.html">&lt;&lt; Wiki</a> | <a href="relogio-teclado.html">&lt; Relogio e teclado</a> | <a href="problemas.html">Problemas comuns &gt;</a></font></p>
+    <p><font size="2"><i>Ultima atualizacao: 24/10/2026</i></font></p>
+
+</body>
+</html>

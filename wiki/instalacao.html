@@ -1,0 +1,83 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 3.2 Final//EN">
+<html>
+<head>
+    <title>Instalacao</title>
+</head>
+<body bgcolor="#FFFFFF" text="#000000" link="#B30000" vlink="#550000">
+    <a name="requisitos"></a>
+    <h2>Requisitos</h2>
+    <hr size="2" noshade>
+    <table width="100%" bgcolor="#FAFAFA" border="1" cellpadding="5" cellspacing="0">
+        <tr><td valign="top"><b>Processador</b></td><td valign="top">x86_64 (64 bits)</td></tr>
+        <tr><td valign="top"><b>Memoria</b></td><td valign="top">o modo texto usa bem pouco; para X11 e Firefox o recomendado eh 2 GB ou mais</td></tr>
+        <tr><td valign="top"><b>Disco</b></td><td valign="top">o sistema base eh pequeno; X11, GTK e Firefox somam mais algumas centenas de MB (o Firefox sozinho ocupa cerca de 300 MB instalado)</td></tr>
+        <tr><td valign="top"><b>Boot</b></td><td valign="top">UEFI ou BIOS</td></tr>
+        <tr><td valign="top"><b>Video</b></td><td valign="top">Intel (i915), QEMU (bochs, virtio, QXL) ou VGA/VESA</td></tr>
+        <tr><td valign="top"><b>Rede</b></td><td valign="top">cabo, USB tethering ou Wi-Fi (com o firmware certo)</td></tr>
+    </table>
+    <p><b>No QEMU:</b></p>
+<pre>qemu-system-x86_64 -enable-kvm -cpu host -m 2048 -cdrom baseroot.iso -boot d \
+    -drive file=disco.img,format=raw -nic user,model=e1000</pre>
+    <br>
+    <a name="setup"></a>
+    <h2>Setup</h2>
+    <hr size="2" noshade>
+    <p>
+        O <b>setup</b> eh o instalador TUI do BaseRoot Linux (versao 2.5). Ele guia o usuario pelo processo de instalacao de forma simples e direta, sem particionar o disco -- o usuario particiona, formata e monta as particoes manualmente antes de rodar o instalador. Nao usa chroot: tudo eh feito direto pelos caminhos dentro do ponto de montagem. Para ver a versao: <code>setup --version</code>.
+    </p>
+    <p><b>Antes de rodar</b>, prepare o disco (por exemplo com <code>fdisk</code> e <code>mkfs.ext4</code>) e monte a raiz em <code>/mnt</code>. Se for separar, monte a <code>/home</code>, ative o <code>swap</code> e, em UEFI, monte a particao EFI (FAT32) dentro de <code>/mnt</code>, por exemplo em <code>/mnt/boot/efi</code>.</p>
+    <p><b>O que o instalador pergunta, na ordem:</b></p>
+    <ul>
+        <li><b>Teclado</b>: escolha do layout, aplicado na hora (para a senha sair certa) e guardado no sistema novo.</li>
+        <li><b>Ponto de montagem</b> (padrao <code>/mnt</code>). Ele confere se existe uma particao mesmo montada ali e avisa se ela ja tem arquivos.</li>
+        <li><b>Kernel</b>: procura sozinho em <code>/boot</code> e nas midias; se achar mais de um, voce escolhe.</li>
+        <li><b>Hostname</b> (so letras, numeros, pontos e hifens).</li>
+        <li><b>Fuso horario</b> e se o computador tambem roda Windows (nesse caso o relogio da placa fica em hora local).</li>
+        <li><b>Modo de boot</b>: ja vem escolhido conforme o modo em que a maquina iniciou (UEFI ou BIOS). Em UEFI, ele acha sozinho a particao FAT montada em <code>/boot/efi</code> ou <code>/boot</code>. Em BIOS com disco GPT, avisa se faltar a particao "BIOS boot".</li>
+        <li><b>Senha do root</b>, obrigatoria (guardada como hash SHA-512).</li>
+        <li>Se quer criar o <b>primeiro usuario</b> ao final (abre o <code>setup-users</code>).</li>
+        <li>Se quer ligar o <b>servidor SSH (Dropbear)</b> no boot. A resposta padrao eh nao.</li>
+    </ul>
+    <p>Depois mostra um resumo e so copia alguma coisa se voce confirmar.</p>
+    <p><b>O que ele faz depois da confirmacao:</b></p>
+    <ul>
+        <li>Copia o sistema (<code>bin sbin etc lib usr var opt srv root home</code>) e cria <code>/proc</code>, <code>/sys</code>, <code>/dev</code>, <code>/run</code>, <code>/tmp</code>, <code>/mnt</code>, <code>/media</code> e <code>/boot</code>.</li>
+        <li>Grava o hostname, o <code>/etc/hosts</code>, o teclado, o fuso e o relogio.</li>
+        <li>Gera o <b>fstab</b>: raiz (com o tipo de sistema de arquivos detectado), swap ativo no mesmo disco, <code>/home</code> separada e a particao EFI.</li>
+        <li>Define a senha do root e, se pedido, liga o SSH.</li>
+        <li>Instala o kernel e o <b>Limine</b> (BIOS no MBR, ou UEFI com o kernel na particao EFI) e escreve o <b>limine.conf</b> com duas entradas: normal e <i>safe graphics</i> (<code>nomodeset</code>).</li>
+        <li>Deixa voce revisar o fstab e o limine.conf no <i>nano</i> ou no <i>vi</i> antes de terminar.</li>
+        <li>Desmonta tudo e guarda o registro completo em <code>/tmp/baseroot-install.log</code>.</li>
+    </ul>
+    <p>No fim, tire a midia de instalacao e digite <code>reboot</code>.</p>
+    <br>
+    <a name="depois"></a>
+    <h3>Depois de instalar</h3>
+    <hr size="2" noshade>
+    <table width="100%" bgcolor="#FAFAFA" border="1" cellpadding="5" cellspacing="0">
+        <tr bgcolor="#E8E8E8"><td><b>Passo</b></td><td><b>Comando</b></td></tr>
+        <tr><td valign="top">Criar usuarios</td><td valign="top"><code>setup-users</code> (o instalador chama ele) ou <code>br-usermgr</code></td></tr>
+        <tr><td valign="top">Servidor SSH (se nao ligou no Setup)</td><td valign="top"><code>service dropbear enable</code></td></tr>
+        <tr><td valign="top">Atualizar as receitas</td><td valign="top"><code>dumpkg-update</code></td></tr>
+        <tr><td valign="top">Wi-Fi (se precisar)</td><td valign="top"><code>dumpkg-install -d br-wifi firmware-&lt;placa&gt; wireless-regdb</code> e depois <code>br-wifi-tui</code></td></tr>
+        <tr><td valign="top">Ambiente grafico</td><td valign="top"><code>dumpkg-install -d xorg xinit xterm twm</code> e depois <code>startx</code></td></tr>
+        <tr><td valign="top">Navegador</td><td valign="top"><code>dumpkg-install -d firefox</code></td></tr>
+    </table>
+    <br>
+    <a name="offline"></a>
+    <h3>Instalar sem internet</h3>
+    <hr size="2" noshade>
+    <p>
+        Sem rede no momento da instalacao? Baixe antes os pacotes que voce vai precisar (cada um eh um <code>.tar.gz</code> ou <code>.tar.bz2</code> no repositorio), copie para a midia de instalacao e, depois de instalado, extraia em <code>/</code>:
+    </p>
+<pre>tar -xf /caminho/da/midia/pacote.tar.gz -C /</pre>
+    <p>
+        Depois, com rede por cabo, USB tethering ou o proprio Wi-Fi, o <code>dumpkg</code> assume. Para o Wi-Fi nao ha pressa: o caminho comum eh instalar o sistema, ligar um cabo ou o tethering, instalar o <code>br-wifi</code> e o firmware, e dai em diante usar so o Wi-Fi.
+    </p>
+
+    <br>
+    <hr size="1" noshade>
+    <p><font size="2">BaseRoot Linux 220018112026 Pre-Alpha -- site atualizado em 18/11/2026.</font></p>
+
+</body>
+</html>

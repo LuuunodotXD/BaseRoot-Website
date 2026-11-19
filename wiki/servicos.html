@@ -1,0 +1,68 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 3.2 Final//EN">
+<html>
+<head>
+    <title>BaseRoot Wiki - Servicos e logs</title>
+</head>
+<body bgcolor="#FFFFFF" text="#000000" link="#B30000" vlink="#550000">
+
+    <p><font size="2"><a href="index.html">&lt;&lt; Wiki</a> | <a href="rede.html">&lt; Rede</a> | <a href="relogio-teclado.html">Relogio e teclado &gt;</a></font></p>
+    <h2>Servicos e logs</h2>
+    <hr size="2" noshade>
+    <p>O BaseRoot usa o <b>toybox init</b>. Ele le o <i>/etc/inittab</i>, roda o <i>/etc/init.d/rcS</i> no boot e o <i>rcK</i> ao desligar. O <i>rcS</i> executa, em ordem, cada script <code>S??-nome</code> que estiver <b>executavel</b>.</p>
+
+    <h3>O comando service</h3>
+    <pre>service                      # lista os servicos (ligados e desligados)
+service syslog status        # estado de um servico
+service cron restart         # start, stop, restart ou status
+service dropbear enable      # liga no boot (da permissao de execucao ao script)
+service dropbear disable     # desliga no boot</pre>
+
+    <h3>Servicos incluidos</h3>
+    <table width="100%" bgcolor="#FAFAFA" border="2" cellpadding="8" cellspacing="0">
+        <tr><td><b>Script</b></td><td><b>O que faz</b></td><td><b>Opcoes</b></td></tr>
+        <tr><td>S10-mount</td><td>Remonta a raiz com escrita, monta o <i>/etc/fstab</i> e liga a swap</td><td>--</td></tr>
+        <tr><td>S12-clock</td><td>Fuso e hora pelo relogio da placa</td><td><i>/etc/default/clock</i></td></tr>
+        <tr><td>S13-keymap</td><td>Layout do teclado</td><td><i>/etc/default/keymap</i></td></tr>
+        <tr><td>S15-syslog</td><td>syslogd e klogd (logs)</td><td><i>/etc/default/syslog</i></td></tr>
+        <tr><td>S20-hostname</td><td>Nome da maquina</td><td><i>/etc/hostname</i></td></tr>
+        <tr><td>S30-network</td><td>Rede com DHCP</td><td><i>/etc/default/network</i></td></tr>
+        <tr><td>S35-ntp</td><td>Acerta a hora pela internet</td><td><i>/etc/default/clock</i></td></tr>
+        <tr><td>S40-dropbear</td><td>SSH (desligado por padrao)</td><td><i>/etc/default/dropbear</i></td></tr>
+        <tr><td>S50-cron</td><td>Agendador de tarefas</td><td><i>/etc/default/cron</i></td></tr>
+    </table>
+    <p>Os numeros definem a ordem: o log (15) sobe antes da rede (30), por exemplo, para registrar o que acontece nela.</p>
+
+    <h3>Logs</h3>
+    <ul>
+        <li><i>/var/log/messages</i> -- tudo o que o <code>syslogd</code> recebe, inclusive as mensagens do kernel. Para acompanhar ao vivo: <code>tail -f /var/log/messages</code>.</li>
+        <li><i>/var/log/boot.log</i> -- a saida dos servicos durante o boot.</li>
+        <li><code>dmesg</code> -- as mensagens do kernel desde o inicio.</li>
+        <li><code>logger "teste"</code> -- manda uma linha de teste para o log.</li>
+    </ul>
+    <p>O arquivo <i>messages</i> gira sozinho ao passar de um tamanho (ajuste em <i>/etc/default/syslog</i>), mantendo alguns arquivos antigos.</p>
+
+    <h3>Tarefas agendadas (cron)</h3>
+    <p>Cada usuario tem a sua lista, editada com:</p>
+    <pre>crontab -e        # edita a sua lista
+crontab -l        # mostra</pre>
+    <p>Cada linha tem cinco campos de tempo (minuto, hora, dia do mes, mes, dia da semana) e o comando. Exemplo: todo dia as 3 da manha.</p>
+    <pre>0 3 * * *  /usr/bin/exemplo.sh</pre>
+
+    <h3>Criar o seu proprio servico</h3>
+    <p>Crie um script em <i>/etc/init.d</i> com nome <code>S60-meuservico</code>, que aceite <code>start</code> e <code>stop</code>, e de a permissao de execucao:</p>
+    <pre>#!/bin/sh
+case "$1" in
+    start) echo "ligando" ;;
+    stop)  echo "desligando" ;;
+esac</pre>
+    <pre>chmod 755 /etc/init.d/S60-meuservico</pre>
+
+    <h3>Terminais</h3>
+    <p>O <i>/etc/inittab</i> abre um login no console principal e outros dois, em <i>tty2</i> e <i>tty3</i> (Alt+F2 e Alt+F3). Para ter mais, acrescente linhas parecidas com <code>::respawn:/sbin/getty 38400 tty4</code>.</p>
+
+    <hr size="1" noshade>
+    <p><font size="2"><a href="index.html">&lt;&lt; Wiki</a> | <a href="rede.html">&lt; Rede</a> | <a href="relogio-teclado.html">Relogio e teclado &gt;</a></font></p>
+    <p><font size="2"><i>Ultima atualizacao: 24/10/2026</i></font></p>
+
+</body>
+</html>

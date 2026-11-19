@@ -1,0 +1,57 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 3.2 Final//EN">
+<html>
+<head>
+    <title>BaseRoot Wiki - Usuarios e grupos</title>
+</head>
+<body bgcolor="#FFFFFF" text="#000000" link="#B30000" vlink="#550000">
+
+    <p><font size="2"><a href="index.html">&lt;&lt; Wiki</a> | <a href="instalacao.html">&lt; Instalacao em disco</a> | <a href="pacotes.html">Pacotes &gt;</a></font></p>
+    <h2>Usuarios e grupos</h2>
+    <hr size="2" noshade>
+    <p>O <b>setup-users</b> eh a ferramenta TUI para criar e gerenciar usuarios e grupos. Precisa ser executada como <b>root</b>.</p>
+    <pre>setup-users</pre>
+
+    <h3>Menu principal</h3>
+    <ul>
+        <li><b>Add a user</b> -- cria o usuario, a home, a senha e escolhe grupos extras</li>
+        <li><b>Remove a user</b> -- remove a conta (a home pode ser mantida ou apagada)</li>
+        <li><b>Change a password</b> -- troca a senha de um usuario</li>
+        <li><b>Lock / unlock a user</b> -- bloqueia ou libera o login</li>
+        <li><b>List users</b> -- mostra os usuarios comuns</li>
+        <li><b>Manage groups</b> -- cria e remove grupos, adiciona e tira usuarios</li>
+    </ul>
+
+    <h3>Como o login funciona</h3>
+    <p>O shell de todos os usuarios eh o <code>/bin/ksh</code>. O ambiente vem do <i>/etc/profile</i>, e cada usuario novo recebe o <i>.profile</i> e o <i>.kshrc</i> de <i>/etc/skel</i>.</p>
+
+    <h3>Exemplo: criar o primeiro usuario</h3>
+    <ol>
+        <li>Rode <code>setup-users</code> e escolha <b>Add a user</b>.</li>
+        <li>Digite o nome (por exemplo <code>maria</code>) e a senha, duas vezes.</li>
+        <li>Na lista de grupos, deixe marcado <code>users</code> e acrescente os que precisar.</li>
+        <li>Pronto: o usuario ja pode entrar em outro terminal (Alt+F2).</li>
+    </ol>
+    <p>Para virar esse usuario sem sair do root:</p>
+    <pre>su - maria</pre>
+    <p>Use sempre <code>su -</code> (com o traco): sem ele o <i>/etc/profile</i> e o <i>.kshrc</i> do usuario nao sao carregados. O <code>su</code> pede a senha da conta de destino.</p>
+
+    <h3>Trocar a propria senha</h3>
+    <pre>passwd</pre>
+
+    <h3>Grupos uteis</h3>
+    <table width="100%" bgcolor="#FAFAFA" border="2" cellpadding="8" cellspacing="0">
+        <tr><td><code>users</code></td><td>grupo comum dos usuarios (vem marcado por padrao)</td></tr>
+        <tr><td><code>wheel</code></td><td>grupo de administradores (ainda nao ha sudo ou doas: por enquanto eh so um nome reservado)</td></tr>
+        <tr><td><code>video</code></td><td>acesso a placa de video (<i>/dev/dri</i>, framebuffer)</td></tr>
+        <tr><td><code>audio</code></td><td>acesso ao som</td></tr>
+        <tr><td><code>input</code></td><td>acesso direto a teclado, mouse e outros dispositivos de entrada</td></tr>
+        <tr><td><code>usb</code></td><td>acesso a dispositivos USB</td></tr>
+        <tr><td><code>kvm</code></td><td>uso do KVM (virtualizacao)</td></tr>
+    </table>
+
+    <hr size="1" noshade>
+    <p><font size="2"><a href="index.html">&lt;&lt; Wiki</a> | <a href="instalacao.html">&lt; Instalacao em disco</a> | <a href="pacotes.html">Pacotes &gt;</a></font></p>
+    <p><font size="2"><i>Ultima atualizacao: 24/10/2026</i></font></p>
+
+</body>
+</html>

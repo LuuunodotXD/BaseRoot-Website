@@ -1,0 +1,54 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 3.2 Final//EN">
+<html>
+<head>
+    <title>BaseRoot Wiki - Primeiro boot</title>
+</head>
+<body bgcolor="#FFFFFF" text="#000000" link="#B30000" vlink="#550000">
+
+    <p><font size="2"><a href="index.html">&lt;&lt; Wiki</a> | <a href="qemu.html">&lt; QEMU</a> | <a href="instalacao.html">Instalacao em disco &gt;</a></font></p>
+    <h2>Primeiro boot</h2>
+    <hr size="2" noshade>
+    <p>Ao iniciar a iso, o menu do Limine aparece e o sistema carrega ate a tela de login. O boot roda os <a href="servicos.html">servicos</a> (montagem, relogio, teclado, logs, rede...) e cada um mostra <code>[  ok  ]</code> ou <code>[ fail ]</code>. A saida deles fica em <i>/var/log/boot.log</i>.</p>
+
+    <h3>Entrando</h3>
+    <p>Na tela de login, use o usuario <code>root</code>. <b>Na iso o root nao tem senha</b>: basta apertar Enter. No sistema instalado o root usa a senha que voce escolheu no instalador.</p>
+    <p>Voce tem tres terminais: o principal e, com <b>Alt+F2</b> e <b>Alt+F3</b>, mais dois (<i>tty2</i> e <i>tty3</i>). <b>Alt+F1</b> volta ao primeiro.</p>
+
+    <h3>Teclado</h3>
+    <p>O layout padrao eh o americano. Se as teclas <code>/</code>, <code>?</code> ou o <code>c</code> com cedilha estiverem fora do lugar (teclado ABNT2), carregue o layout certo:</p>
+    <pre>loadkeys br-abnt2</pre>
+    <p>Para deixar fixo, veja <a href="relogio-teclado.html">Relogio e teclado</a>. O instalador tambem pergunta o layout logo no comeco.</p>
+
+    <h3>Primeiros comandos</h3>
+    <pre>service            # lista os servicos e o que esta ligado
+ip addr            # mostra a rede (o DHCP ja eh automatico)
+date               # data e hora
+uname -a           # versao do kernel
+df                 # espaco nos discos
+free               # memoria</pre>
+    <p>A mensagem de boas-vindas (<i>/etc/motd</i>) mostra a versao do BaseRoot e do kernel.</p>
+
+    <h3>O que vem instalado</h3>
+    <ul>
+        <li><b>toybox</b> (comandos basicos), <b>mksh</b> (shell, tambem chamado <code>ksh</code>) e <b>vi</b> como editor</li>
+        <li><b>setup</b> (instalador) e <b>setup-users</b> (usuarios e grupos)</li>
+        <li><b>dumpkg</b> e <b>spkg</b> (pacotes) e <b>wget</b> com HTTPS</li>
+        <li><b>Dropbear</b> (SSH, desligado por padrao), <b>crond</b> e <b>syslogd</b></li>
+        <li><b>loadkeys</b> com mais de 80 layouts de teclado e a lista de fusos horarios</li>
+        <li>Ferramentas de disco para preparar a instalacao (<code>cfdisk</code>/<code>fdisk</code>, <code>mkfs.ext4</code>, <code>mkfs.vfat</code>)</li>
+        <li><b>Limine</b>, o bootloader usado pelo instalador</li>
+    </ul>
+
+    <h3>Proximos passos</h3>
+    <ul>
+        <li><a href="instalacao.html">Instalar em disco</a></li>
+        <li><a href="usuarios.html">Criar usuarios</a></li>
+        <li><a href="rede.html">Configurar a rede</a></li>
+    </ul>
+
+    <hr size="1" noshade>
+    <p><font size="2"><a href="index.html">&lt;&lt; Wiki</a> | <a href="qemu.html">&lt; QEMU</a> | <a href="instalacao.html">Instalacao em disco &gt;</a></font></p>
+    <p><font size="2"><i>Ultima atualizacao: 24/10/2026</i></font></p>
+
+</body>
+</html>

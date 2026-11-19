@@ -1,0 +1,41 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 3.2 Final//EN">
+<html>
+<head>
+    <title>BaseRoot Wiki - QEMU</title>
+</head>
+<body bgcolor="#FFFFFF" text="#000000" link="#B30000" vlink="#550000">
+
+    <p><font size="2"><a href="index.html">&lt;&lt; Wiki</a> | <a href="gravar-iso.html">&lt; Gravar a ISO</a> | <a href="primeiro-boot.html">Primeiro boot &gt;</a></font></p>
+    <h2>QEMU</h2>
+    <hr size="2" noshade>
+    <p>O QEMU permite testar o BaseRoot sem mexer no seu computador. Os exemplos abaixo usam 512 MiB de RAM.</p>
+
+    <h3>Boot por BIOS (padrao do QEMU)</h3>
+    <pre>qemu-system-x86_64 -m 512 -cdrom baseroot.iso</pre>
+
+    <h3>Boot por UEFI</h3>
+    <p>Precisa do firmware OVMF (o caminho muda de acordo com a distribuicao):</p>
+    <pre>qemu-system-x86_64 -m 512 -bios OVMF.fd -cdrom baseroot.iso -boot d</pre>
+
+    <h3>Mais rapido com KVM</h3>
+    <p>Se o seu computador tiver virtualizacao, acrescente <code>-enable-kvm</code>. Sem ele o sistema roda, mas fica mais lento.</p>
+
+    <h3>Com disco virtual (para testar a instalacao)</h3>
+    <pre>qemu-img create -f qcow2 disco.qcow2 8G
+qemu-system-x86_64 -m 512 -cdrom baseroot.iso -hda disco.qcow2 -boot d</pre>
+
+    <h3>Rede</h3>
+    <p>Por padrao o QEMU cria uma rede em modo usuario (NAT): o BaseRoot recebe um endereco por DHCP (algo como <code>10.0.2.15</code>) e acessa a internet, mas o computador de fora nao alcanca a maquina virtual. Dois detalhes:</p>
+    <ul>
+        <li>O <code>ping</code> <b>nao funciona</b> nesse modo (o QEMU nao repassa ICMP). Teste a rede com <code>wget</code>.</li>
+        <li>Para entrar na maquina virtual por <a href="ssh.html">SSH</a>, encaminhe uma porta do seu computador para a porta 22:</li>
+    </ul>
+    <pre>qemu-system-x86_64 -m 512 -cdrom baseroot.iso -nic user,hostfwd=tcp::2222-:22</pre>
+    <p>Depois, no seu computador: <code>ssh -p 2222 usuario@localhost</code> (antes, ligue o Dropbear no BaseRoot).</p>
+
+    <hr size="1" noshade>
+    <p><font size="2"><a href="index.html">&lt;&lt; Wiki</a> | <a href="gravar-iso.html">&lt; Gravar a ISO</a> | <a href="primeiro-boot.html">Primeiro boot &gt;</a></font></p>
+    <p><font size="2"><i>Ultima atualizacao: 24/10/2026</i></font></p>
+
+</body>
+</html>

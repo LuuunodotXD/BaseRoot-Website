@@ -1,0 +1,49 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 3.2 Final//EN">
+<html>
+<head>
+    <title>BaseRoot Wiki - Relogio e teclado</title>
+</head>
+<body bgcolor="#FFFFFF" text="#000000" link="#B30000" vlink="#550000">
+
+    <p><font size="2"><a href="index.html">&lt;&lt; Wiki</a> | <a href="servicos.html">&lt; Servicos e logs</a> | <a href="ssh.html">SSH &gt;</a></font></p>
+    <h2>Relogio e teclado</h2>
+    <hr size="2" noshade>
+    <h3>Fuso horario e relogio</h3>
+    <p>As opcoes ficam em <i>/etc/default/clock</i>:</p>
+    <pre>TIMEZONE="America/Fortaleza"   # um nome de /usr/share/zoneinfo
+HWCLOCK="utc"                  # "utc" ou "localtime"
+NTP_SERVER="pool.ntp.org"      # vazio desliga o acerto pela internet</pre>
+    <p>Para ver os fusos disponiveis:</p>
+    <pre>find /usr/share/zoneinfo -type f</pre>
+    <p>Depois de mudar o arquivo, aplique com <code>service clock restart</code> e confira com <code>date</code>. O instalador ja pergunta o fuso e grava esse arquivo no sistema novo.</p>
+
+    <h3>Como a hora eh mantida</h3>
+    <ul>
+        <li>No boot, o servico <code>clock</code> le o relogio da placa (RTC) e aplica o fuso.</li>
+        <li>Ao desligar ou reiniciar, a hora do sistema eh gravada de volta na placa, para nao se perder.</li>
+        <li>Depois que a rede sobe, o servico <code>ntp</code> acerta a hora pela internet (<code>sntp</code>) e grava na placa. Ele tenta por cerca de dois minutos e para; o resultado fica no <i>/var/log/boot.log</i>.</li>
+    </ul>
+    <p>Se o computador tambem roda <b>Windows</b>, use <code>HWCLOCK="localtime"</code>: o Windows guarda a hora local no relogio da placa e os dois sistemas passam a concordar.</p>
+
+    <h3>Acertar a mao</h3>
+    <pre>date -s "2026-10-24 20:30:00"     # acerta a hora do sistema
+hwclock -w -u                     # grava na placa (use -l se for hora local)
+sntp -s pool.ntp.org              # acerta pela internet</pre>
+
+    <h3>Teclado</h3>
+    <p>O layout padrao eh o americano. Para testar um layout agora:</p>
+    <pre>loadkeys br-abnt2</pre>
+    <p>Para ficar fixo, edite <i>/etc/default/keymap</i>:</p>
+    <pre>KEYMAP="br-abnt2"</pre>
+    <p>E aplique com <code>service keymap restart</code>. O instalador tambem pergunta o layout e grava esse arquivo.</p>
+    <p>Para ver os layouts incluidos:</p>
+    <pre>find /usr/share/keymaps -name "*.map"</pre>
+    <p>Alguns nomes uteis: <code>us</code>, <code>br-abnt2</code>, <code>br-latin1-abnt2</code>, <code>pt-latin1</code>, <code>es</code>, <code>fr</code>, <code>de</code>, <code>it</code>, <code>uk</code>.</p>
+    <p>O layout vale para os terminais do console (as telas Alt+F1, F2, F3). Quem entra por SSH usa o teclado do proprio computador.</p>
+
+    <hr size="1" noshade>
+    <p><font size="2"><a href="index.html">&lt;&lt; Wiki</a> | <a href="servicos.html">&lt; Servicos e logs</a> | <a href="ssh.html">SSH &gt;</a></font></p>
+    <p><font size="2"><i>Ultima atualizacao: 24/10/2026</i></font></p>
+
+</body>
+</html>

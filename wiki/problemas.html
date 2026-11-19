@@ -1,0 +1,98 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 3.2 Final//EN">
+<html>
+<head>
+    <title>BaseRoot Wiki - Problemas comuns</title>
+</head>
+<body bgcolor="#FFFFFF" text="#000000" link="#B30000" vlink="#550000">
+
+    <p><font size="2"><a href="index.html">&lt;&lt; Wiki</a> | <a href="ssh.html">&lt; SSH</a></font></p>
+    <h2>Problemas comuns</h2>
+    <hr size="2" noshade>
+    <p>Lista de problemas conhecidos e como resolver. Cada linha tem o sintoma, a causa provavel e a solucao.</p>
+    <table width="100%" bgcolor="#FAFAFA" border="2" cellpadding="8" cellspacing="0">
+        <tr>
+            <td><b>Sintoma</b></td>
+            <td><b>Causa provavel</b></td>
+            <td><b>Solucao</b></td>
+        </tr>
+        <tr>
+            <td>O <code>su</code> responde <code>No.</code> na iso</td>
+            <td>A conta root da iso nao tem senha, e o <code>su</code> recusa conta sem senha</td>
+            <td>Defina uma senha com <code>passwd</code> ou entre direto como root. No sistema instalado, use a senha definida no instalador</td>
+        </tr>
+        <tr>
+            <td>O <code>su</code> responde <code>Not root</code></td>
+            <td>O programa nao tem o bit setuid (so acontece em ISOs montadas a mao)</td>
+            <td><code>chmod 4755 /bin/toybox</code> no sistema montado (nunca <code>4777</code>)</td>
+        </tr>
+        <tr>
+            <td>O usuario fica sem profile e aliases depois do <code>su</code></td>
+            <td>O <code>su</code> sem traco nao carrega o <i>/etc/profile</i></td>
+            <td>Use <code>su - usuario</code></td>
+        </tr>
+        <tr>
+            <td>Teclas <code>/</code>, <code>?</code> e <code>c</code> com cedilha erradas</td>
+            <td>Layout americano, que eh o padrao</td>
+            <td><code>loadkeys br-abnt2</code> e <code>KEYMAP=&quot;br-abnt2&quot;</code> em <i>/etc/default/keymap</i></td>
+        </tr>
+        <tr>
+            <td>Hora errada, fora do fuso</td>
+            <td><code>TIMEZONE</code> nao foi definido, ou o relogio da placa esta em hora local (Windows)</td>
+            <td>Ajuste <i>/etc/default/clock</i> (<code>TIMEZONE</code> e <code>HWCLOCK=&quot;localtime&quot;</code>) e rode <code>service clock restart</code></td>
+        </tr>
+        <tr>
+            <td><code>ping</code> nao funciona no QEMU</td>
+            <td>A rede padrao do QEMU nao repassa ICMP</td>
+            <td>Teste com <code>wget</code>; a rede esta funcionando</td>
+        </tr>
+        <tr>
+            <td>Sem rede depois de ligar o cabo ou o telefone</td>
+            <td>A interface apareceu depois do boot</td>
+            <td><code>service network restart</code></td>
+        </tr>
+        <tr>
+            <td>SSH: <code>Connection refused</code></td>
+            <td>O Dropbear esta desligado</td>
+            <td><code>service dropbear enable</code> e <code>service dropbear start</code></td>
+        </tr>
+        <tr>
+            <td>SSH: aviso de que a chave do servidor mudou</td>
+            <td>Na iso as chaves sao geradas a cada boot</td>
+            <td>Use <code>-o UserKnownHostsFile=/dev/null</code> ou apague a linha antiga do <i>known_hosts</i></td>
+        </tr>
+        <tr>
+            <td>SSH: senha recusada para o root ou para uma conta sem senha</td>
+            <td>O Dropbear nao aceita senha vazia, e <code>-w</code> bloqueia o root</td>
+            <td>Crie um usuario com senha pelo <code>setup-users</code></td>
+        </tr>
+        <tr>
+            <td>Instalador: <code>Nothing is mounted on ...</code></td>
+            <td>A particao raiz nao esta montada</td>
+            <td><code>mount /dev/sdXN /mnt</code> antes de rodar o <code>setup</code></td>
+        </tr>
+        <tr>
+            <td>Instalador em BIOS avisa <i>No BIOS boot partition</i></td>
+            <td>Disco GPT sem a particao <i>BIOS boot</i> que o Limine precisa</td>
+            <td>Crie uma particao de 1 MiB do tipo <i>BIOS boot</i>, ou use um disco MBR, ou instale em UEFI</td>
+        </tr>
+        <tr>
+            <td>Instalador nao encontra o kernel</td>
+            <td>Nao ha <i>vmlinuz*</i> em nenhum dos lugares de busca</td>
+            <td>Digite o caminho completo quando o instalador pedir</td>
+        </tr>
+        <tr>
+            <td>Um servico nao aparece ligado no <code>service</code></td>
+            <td>O script nao tem permissao de execucao</td>
+            <td><code>service nome enable</code></td>
+        </tr>
+    </table>
+    <br>
+    <h3>Nao achou o seu problema?</h3>
+    <p>Veja o <i>/var/log/messages</i> e o <i>/var/log/boot.log</i> (ou rode <code>dmesg</code>); eles costumam mostrar a causa. Se a instalacao falhou, olhe o <i>/tmp/baseroot-install.log</i>.</p>
+
+    <hr size="1" noshade>
+    <p><font size="2"><a href="index.html">&lt;&lt; Wiki</a> | <a href="ssh.html">&lt; SSH</a></font></p>
+    <p><font size="2"><i>Ultima atualizacao: 24/10/2026</i></font></p>
+
+</body>
+</html>

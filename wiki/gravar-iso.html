@@ -1,0 +1,43 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 3.2 Final//EN">
+<html>
+<head>
+    <title>BaseRoot Wiki - Gravar a ISO</title>
+</head>
+<body bgcolor="#FFFFFF" text="#000000" link="#B30000" vlink="#550000">
+
+    <p><font size="2"><a href="index.html">&lt;&lt; Wiki</a> | <a href="qemu.html">QEMU &gt;</a></font></p>
+    <h2>Gravar a ISO</h2>
+    <hr size="2" noshade>
+    <p>Esta pagina explica como gravar a iso do BaseRoot num pendrive. Baixe a iso e confira o checksum antes (veja a <a href="../main.html#download" target="content">tabela de downloads</a>).</p>
+
+    <h3>Com o dd (Linux)</h3>
+    <p><b>Cuidado:</b> o <code>dd</code> apaga tudo o que estiver no pendrive. Confira o nome do dispositivo com <code>lsblk</code> e troque <code>sdX</code> pelo seu.</p>
+    <pre>dd if=baseroot.iso of=/dev/sdX bs=4M conv=fsync status=progress</pre>
+
+    <h3>Com o Ventoy</h3>
+    <p>Instale o Ventoy no pendrive e copie o arquivo <code>.iso</code> para ele. O BaseRoot aparece no menu do Ventoy ao iniciar.</p>
+
+    <h3>No Windows</h3>
+    <p>Duas opcoes simples:</p>
+    <ul>
+        <li><b>Rufus</b>: escolha o pendrive, clique em <i>SELECIONAR</i> e aponte para a iso. Ao clicar em <i>INICIAR</i>, o Rufus pergunta o modo de gravacao: escolha <b>Gravar no modo Imagem DD</b>. Isso equivale ao <code>dd</code> do Linux.</li>
+        <li><b>balenaEtcher</b>: <i>Flash from file</i> (a iso), <i>Select target</i> (o pendrive) e <i>Flash!</i>.</li>
+    </ul>
+    <p>O <b>Ventoy</b> tambem funciona no Windows: instale-o no pendrive com o <i>Ventoy2Disk</i> e copie o arquivo <code>.iso</code> para ele.</p>
+    <p><b>Cuidado:</b> gravar a iso apaga tudo o que estiver no pendrive.</p>
+
+    <h3>Conferindo o checksum</h3>
+    <pre>sha256sum baseroot.iso</pre>
+    <p>No Windows, no PowerShell:</p>
+    <pre>Get-FileHash baseroot.iso -Algorithm SHA256</pre>
+    <p>Compare o resultado com o valor da tabela de downloads. Se for diferente, baixe a iso de novo.</p>
+
+    <h3>Depois de gravar</h3>
+    <p>Com o pendrive pronto, reinicie o computador e escolha o pendrive no menu de boot (normalmente F12, F10, F8 ou Esc, conforme a marca). Depois siga para o <a href="primeiro-boot.html">primeiro boot</a>.</p>
+
+    <hr size="1" noshade>
+    <p><font size="2"><a href="index.html">&lt;&lt; Wiki</a> | <a href="qemu.html">QEMU &gt;</a></font></p>
+    <p><font size="2"><i>Ultima atualizacao: 27/10/2026</i></font></p>
+
+</body>
+</html>

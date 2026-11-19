@@ -1,0 +1,88 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 3.2 Final//EN">
+<html>
+<head>
+    <title>Rede e Wi-Fi</title>
+</head>
+<body bgcolor="#FFFFFF" text="#000000" link="#B30000" vlink="#550000">
+    <a name="rede"></a>
+    <h2>Rede e Wi-Fi</h2>
+    <hr size="2" noshade>
+    <p>Tres jeitos de ficar online no BaseRoot:</p>
+    <table width="100%" bgcolor="#FAFAFA" border="1" cellpadding="5" cellspacing="0">
+        <tr bgcolor="#E8E8E8"><td><b>Jeito</b></td><td><b>Como</b></td></tr>
+        <tr><td valign="top"><b>Cabo</b></td><td valign="top">sobe sozinho no boot, com DHCP automatico (<code>ip link set $INTERFACE up &amp;&amp; dhcp -i $INTERFACE</code>).</td></tr>
+        <tr><td valign="top"><b>USB tethering</b></td><td valign="top">ligue o celular (Android ou iPhone) com o tethering USB ativado. O kernel ja traz os drivers CDC Ether, RNDIS e iPhone.</td></tr>
+        <tr><td valign="top"><b>Wi-Fi</b></td><td valign="top">instale os pacotes abaixo e use o <code>br-wifi</code>.</td></tr>
+    </table>
+    <br>
+    <a name="brwifi"></a>
+    <h3>br-wifi</h3>
+    <hr size="2" noshade>
+    <p>
+        O <b>br-wifi</b> cuida de tudo no Wi-Fi: achar a placa, carregar o driver, procurar redes, conectar e lembrar das redes. Tem uma interface em <b>texto</b> (<code>br-wifi</code>) e uma em <b>tela cheia</b> (<code>br-wifi-tui</code>), as duas usando o mesmo motor. Nao precisa de ncurses nem de dialog: so de um terminal ANSI.
+    </p>
+    <p><b>Instalacao:</b></p>
+<pre>dumpkg-install -d br-wifi
+dumpkg-install firmware-&lt;sua placa&gt; wireless-regdb</pre>
+    <p>
+        O <code>-d</code> traz <code>iw</code>, <code>wpa_supplicant</code> e <code>libnl</code> junto. Para ligar o servico no boot rode <code>br-wifi boot on</code>; para usar agora sem reiniciar, <code>br-wifi start</code>.
+    </p>
+    <p><b>O que ele faz:</b></p>
+    <ul>
+        <li>Carrega o driver certo sozinho, lendo o modalias do dispositivo (nao precisa de <code>modprobe</code>).</li>
+        <li>Procura redes, conecta e salva a senha. Redes <b>ocultas</b>, abertas e WPA/WPA2.</li>
+        <li><b>Redes salvas com prioridade</b>: reordene, desative a reconexao automatica de uma rede ou esqueca ela.</li>
+        <li>Troca de senha de uma rede salva e <b>teste de conexao</b> (<code>br-wifi test</code>).</li>
+        <li><b>MAC</b> aleatorio ou o original da placa (<code>br-wifi mac</code>).</li>
+        <li>Pais da regulamentacao (<code>br-wifi country BR</code>) para usar os canais certos.</li>
+        <li><b>Cabo primeiro</b>: se um cabo estiver conectado, o Wi-Fi dorme; quando o cabo sai, ele acorda sozinho (<code>br-wifi wired</code>).</li>
+        <li>Servico em segundo plano com log (<code>br-wifi log</code>) que nao enche o disco.</li>
+    </ul>
+    <p><b>Comandos principais:</b></p>
+    <table width="100%" bgcolor="#FAFAFA" border="1" cellpadding="5" cellspacing="0">
+        <tr bgcolor="#E8E8E8"><td><b>Comando</b></td><td><b>Faz</b></td></tr>
+        <tr><td valign="top"><code>br-wifi</code></td><td valign="top">menu em modo texto</td></tr>
+        <tr><td valign="top"><code>br-wifi-tui</code> ou <code>br-wifi tui</code></td><td valign="top">versao em tela cheia</td></tr>
+        <tr><td valign="top"><code>br-wifi scan</code></td><td valign="top">lista as redes ao alcance</td></tr>
+        <tr><td valign="top"><code>br-wifi connect</code></td><td valign="top">conecta (pede rede e senha)</td></tr>
+        <tr><td valign="top"><code>br-wifi list</code></td><td valign="top">redes salvas</td></tr>
+        <tr><td valign="top"><code>br-wifi priority</code>, <code>forget</code>, <code>password</code>, <code>auto</code></td><td valign="top">prioridade, esquecer, trocar a senha e reconexao automatica</td></tr>
+        <tr><td valign="top"><code>br-wifi status</code>, <code>up</code>, <code>disconnect</code></td><td valign="top">estado, subir a interface, desconectar</td></tr>
+        <tr><td valign="top"><code>br-wifi boot on|off</code></td><td valign="top">liga ou desliga o servico no boot</td></tr>
+        <tr><td valign="top"><code>br-wifi start|stop|restart</code></td><td valign="top">controla o servico agora</td></tr>
+        <tr><td valign="top"><code>br-wifi mac</code>, <code>country</code>, <code>wired</code>, <code>test</code>, <code>log</code></td><td valign="top">MAC, pais, cabo primeiro, teste e log</td></tr>
+    </table>
+    <p>
+        Na tela cheia: setas (ou <code>j</code> e <code>k</code>) navegam, <code>Enter</code> escolhe, <code>r</code> procura de novo, <code>h</code> conecta em rede oculta, <code>s</code> abre as redes salvas, <code>?</code> mostra todas as teclas e <code>q</code> sai.
+    </p>
+    <p><b>Configuracao</b> em <code>/etc/br-wifi.conf</code>:</p>
+    <table width="100%" bgcolor="#FAFAFA" border="1" cellpadding="5" cellspacing="0">
+        <tr bgcolor="#E8E8E8"><td><b>Variavel</b></td><td><b>Padrao</b></td><td><b>Significado</b></td></tr>
+        <tr><td valign="top"><code>ENABLE</code></td><td valign="top">no</td><td valign="top">servico ligado no boot</td></tr>
+        <tr><td valign="top"><code>MODULES</code></td><td valign="top">(vazio)</td><td valign="top">drivers extras para carregar</td></tr>
+        <tr><td valign="top"><code>WIRED</code></td><td valign="top">prefer</td><td valign="top"><code>prefer</code>: cabo primeiro; <code>ignore</code>: cabo e Wi-Fi juntos</td></tr>
+        <tr><td valign="top"><code>IFACE</code></td><td valign="top">(vazio)</td><td valign="top">interface fixa; vazio = achar sozinho</td></tr>
+        <tr><td valign="top"><code>BR_WIFI_COUNTRY</code></td><td valign="top">BR</td><td valign="top">pais da regulamentacao</td></tr>
+    </table>
+    <p><b>Limites conhecidos:</b> redes <b>so WPA3</b> nao sao suportadas (WPA2 e WPA2/WPA3 misto funcionam). O dongle RTL8188EU usa o driver <i>r8188eu</i>, que fala o protocolo antigo (WEXT): funciona, mas sem recursos modernos.</p>
+    <br>
+    <a name="placas"></a>
+    <h3>Placas Wi-Fi que o kernel suporta</h3>
+    <hr size="2" noshade>
+    <table width="100%" bgcolor="#FAFAFA" border="1" cellpadding="5" cellspacing="0">
+        <tr bgcolor="#E8E8E8"><td><b>Fabricante</b></td><td><b>Drivers</b></td></tr>
+        <tr><td valign="top">Intel</td><td valign="top">iwlwifi (dvm, 3160, 3168, 7260, 7265, 8265, 9260, AX200, AX201, AX210, AX211, AX411)</td></tr>
+        <tr><td valign="top">Realtek</td><td valign="top">rtw88 (8821CE, 8822BE, 8822CE, 8723DE), rtw89 (8852AE, 8852BE, 8852CE), rtl8xxxu, r8188eu</td></tr>
+        <tr><td valign="top">Qualcomm Atheros</td><td valign="top">ath9k, ath9k_htc, ath10k</td></tr>
+        <tr><td valign="top">MediaTek</td><td valign="top">mt7921 (PCIe e USB), mt76x2, mt7601u</td></tr>
+        <tr><td valign="top">Ralink</td><td valign="top">rt2x00 (rt2800usb, rt2800pci, rt73usb)</td></tr>
+        <tr><td valign="top">Broadcom</td><td valign="top">brcmfmac (SDIO, PCIe, USB)</td></tr>
+    </table>
+    <p>Cada um precisa do pacote <code>firmware-*</code> correspondente (veja <a href="sistema.html#firmware">Firmware</a>).</p>
+
+    <br>
+    <hr size="1" noshade>
+    <p><font size="2">BaseRoot Linux 220018112026 Pre-Alpha -- site atualizado em 18/11/2026.</font></p>
+
+</body>
+</html>
