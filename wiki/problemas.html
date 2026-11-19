@@ -8,7 +8,12 @@
     <p><font size="2"><a href="index.html">&lt;&lt; Wiki</a> | <a href="ssh.html">&lt; SSH</a></font></p>
     <h2>Problemas comuns</h2>
     <hr size="2" noshade>
-    <p>Lista de problemas conhecidos e como resolver. Cada linha tem o sintoma, a causa provavel e a solucao.</p>
+    <p>Lista de problemas conhecidos e como resolver. A tabela cobre sistema, instalacao e SSH; abaixo dela ficam o Wi-Fi, o Firefox, os pacotes e outras duvidas.</p>
+    <p><font size="2">Nesta pagina: <a href="#sistema">Sistema, instalacao e SSH</a> | <a href="#wifi">Wi-Fi</a> | <a href="#firefox">Firefox</a> | <a href="#pacotes">Pacotes</a> | <a href="#outros">Outras duvidas</a> | <a href="#contato">Reportar um problema</a></font></p>
+
+    <a name="sistema"></a>
+    <h3>Sistema, instalacao e SSH</h3>
+    <p>Cada linha tem o sintoma, a causa provavel e a solucao.</p>
     <table width="100%" bgcolor="#FAFAFA" border="2" cellpadding="8" cellspacing="0">
         <tr>
             <td><b>Sintoma</b></td>
@@ -86,13 +91,75 @@
             <td><code>service nome enable</code></td>
         </tr>
     </table>
-    <br>
+
+    <a name="wifi"></a>
+    <h3>Wi-Fi</h3>
+    <p><b>O Wi-Fi nao aparece (nenhuma interface).</b></p>
+    <ul>
+        <li>Veja se o driver existe no kernel (<a href="rede.html#placas">placas suportadas</a>) e instale o <code>firmware-*</code> da sua placa mais o <code>wireless-regdb</code>.</li>
+        <li>Rode <code>lspci</code> ou <code>lsusb</code> para saber o modelo, e <code>dmesg | grep -i firmware</code> para ver se faltou algum arquivo.</li>
+        <li>Depois de instalar o firmware: <code>br-wifi modules</code> e <code>br-wifi</code>.</li>
+    </ul>
+    <p><b>O Wi-Fi so lista redes sem canais, ou conecta e cai.</b></p>
+    <ul>
+        <li>Ajuste o pais: <code>br-wifi country BR</code>. Sem o <code>wireless-regdb</code> o kernel limita os canais.</li>
+    </ul>
+    <p><b>Minha rede nao conecta (so WPA3).</b></p>
+    <ul>
+        <li>Redes que so aceitam WPA3 nao sao suportadas. Habilite o modo WPA2/WPA3 misto no roteador.</li>
+    </ul>
+
+    <a name="firefox"></a>
+    <h3>Firefox</h3>
+    <p><b>O Firefox fecha logo ao abrir (falha de segmentacao).</b></p>
+    <ul>
+        <li>Confira se <code>icu-data-full</code> esta instalado (<code>dumpkg-install -d firefox</code> ja traz).</li>
+        <li>Rode <code>MOZ_CRASHREPORTER_DISABLE=1 firefox; echo $?</code>: <code>139</code> eh falha de segmentacao; <code>132</code> eh instrucao ilegal (no QEMU, use <code>-cpu host</code>).</li>
+        <li>Confirme que <code>/dev/shm</code> esta montado (<code>mount -t tmpfs tmpfs /dev/shm</code>).</li>
+    </ul>
+    <p><b>O Firefox pede uma biblioteca que nao existe.</b></p>
+    <ul>
+        <li>Veja o que o loader nao achou: <code>/lib/ld-musl-x86_64.so.1 --list /usr/lib/firefox-esr/firefox-esr</code> e instale o pacote correspondente.</li>
+    </ul>
+    <p><b>Aparece "failed to load driver: virtio_gpu" no QEMU.</b></p>
+    <ul>
+        <li>Eh so um aviso: o Mesa nao tem o driver virgl, entao o Firefox desenha por software. Nao atrapalha.</li>
+    </ul>
+
+    <a name="pacotes"></a>
+    <h3>Pacotes</h3>
+    <p><b>O pacote nao instala: erro de checksum.</b></p>
+    <ul>
+        <li>Rode <code>dumpkg-update</code> para sincronizar as receitas e tente de novo. Se o erro continuar, a receita e o binario estao fora de sincronia no repositorio: avise no GitHub.</li>
+    </ul>
+
+    <a name="outros"></a>
+    <h3>Outras duvidas</h3>
+    <p><b>Quero entrar no computador por SSH.</b></p>
+    <ul>
+        <li>Rode <code>service dropbear enable</code> (ou responda sim no Setup), reinicie e conecte na porta 22: <code>ssh usuario@endereco</code>.</li>
+        <li>A conta precisa ter senha: o root recebe uma no Setup e as outras voce cria com <code>setup-users</code> ou <code>br-usermgr</code>.</li>
+        <li>Guia completo: <a href="ssh.html">SSH</a>.</li>
+    </ul>
+    <p><b>Bluetooth.</b></p>
+    <ul>
+        <li>Ainda nao suportado: so o firmware (<code>firmware-bluetooth</code>) esta no repositorio. A pilha Bluetooth no kernel e no sistema vem em uma versao futura.</li>
+    </ul>
+    <p><b>Bateria, brilho e suspensao em notebook.</b></p>
+    <ul>
+        <li>Ainda nao ha ferramentas proprias. Para o kernel enxergar a bateria e a tampa, <code>ACPI_BATTERY</code>, <code>ACPI_AC</code> e <code>ACPI_BUTTON</code> precisam estar como <code>=y</code>.</li>
+    </ul>
+
     <h3>Nao achou o seu problema?</h3>
     <p>Veja o <i>/var/log/messages</i> e o <i>/var/log/boot.log</i> (ou rode <code>dmesg</code>); eles costumam mostrar a causa. Se a instalacao falhou, olhe o <i>/tmp/baseroot-install.log</i>.</p>
 
+    <a name="contato"></a>
+    <h3>Contribuir e reportar problemas</h3>
+    <p>Achou um bug, uma receita errada ou quer pedir um pacote? Abra uma <i>issue</i> no repositorio certo (veja <a href="../main.html#fontes">Fontes</a>): receitas e pacotes em <b>Dump-Package-Recipes</b>, o gerenciador em <b>Dump-Package-Manager</b>.</p>
+
     <hr size="1" noshade>
     <p><font size="2"><a href="index.html">&lt;&lt; Wiki</a> | <a href="ssh.html">&lt; SSH</a></font></p>
-    <p><font size="2"><i>Ultima atualizacao: 24/10/2026</i></font></p>
+    <p><font size="2"><i>Ultima atualizacao: 18/11/2026</i></font></p>
 
 </body>
 </html>

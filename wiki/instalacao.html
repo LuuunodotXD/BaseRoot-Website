@@ -1,12 +1,17 @@
 <!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 3.2 Final//EN">
 <html>
 <head>
-    <title>Instalacao</title>
+    <title>BaseRoot Wiki - Instalacao em disco</title>
 </head>
 <body bgcolor="#FFFFFF" text="#000000" link="#B30000" vlink="#550000">
-    <a name="requisitos"></a>
-    <h2>Requisitos</h2>
+
+    <p><font size="2"><a href="index.html">&lt;&lt; Wiki</a> | <a href="primeiro-boot.html">&lt; Primeiro boot</a> | <a href="usuarios.html">Usuarios e grupos &gt;</a></font></p>
+    <h2>Instalacao em disco</h2>
     <hr size="2" noshade>
+    <p>Requisitos, o instalador (<b>setup</b>), o que fazer depois de instalar e como instalar sem internet.</p>
+
+    <a name="requisitos"></a>
+    <h3>Requisitos</h3>
     <table width="100%" bgcolor="#FAFAFA" border="1" cellpadding="5" cellspacing="0">
         <tr><td valign="top"><b>Processador</b></td><td valign="top">x86_64 (64 bits)</td></tr>
         <tr><td valign="top"><b>Memoria</b></td><td valign="top">o modo texto usa bem pouco; para X11 e Firefox o recomendado eh 2 GB ou mais</td></tr>
@@ -18,10 +23,8 @@
     <p><b>No QEMU:</b></p>
 <pre>qemu-system-x86_64 -enable-kvm -cpu host -m 2048 -cdrom baseroot.iso -boot d \
     -drive file=disco.img,format=raw -nic user,model=e1000</pre>
-    <br>
     <a name="setup"></a>
-    <h2>Setup</h2>
-    <hr size="2" noshade>
+    <h3>Setup</h3>
     <p>
         O <b>setup</b> eh o instalador TUI do BaseRoot Linux (versao 2.5). Ele guia o usuario pelo processo de instalacao de forma simples e direta, sem particionar o disco -- o usuario particiona, formata e monta as particoes manualmente antes de rodar o instalador. Nao usa chroot: tudo eh feito direto pelos caminhos dentro do ponto de montagem. Para ver a versao: <code>setup --version</code>.
     </p>
@@ -50,10 +53,8 @@
         <li>Desmonta tudo e guarda o registro completo em <code>/tmp/baseroot-install.log</code>.</li>
     </ul>
     <p>No fim, tire a midia de instalacao e digite <code>reboot</code>.</p>
-    <br>
     <a name="depois"></a>
     <h3>Depois de instalar</h3>
-    <hr size="2" noshade>
     <table width="100%" bgcolor="#FAFAFA" border="1" cellpadding="5" cellspacing="0">
         <tr bgcolor="#E8E8E8"><td><b>Passo</b></td><td><b>Comando</b></td></tr>
         <tr><td valign="top">Criar usuarios</td><td valign="top"><code>setup-users</code> (o instalador chama ele) ou <code>br-usermgr</code></td></tr>
@@ -63,10 +64,8 @@
         <tr><td valign="top">Ambiente grafico</td><td valign="top"><code>dumpkg-install -d xorg xinit xterm twm</code> e depois <code>startx</code></td></tr>
         <tr><td valign="top">Navegador</td><td valign="top"><code>dumpkg-install -d firefox</code></td></tr>
     </table>
-    <br>
     <a name="offline"></a>
     <h3>Instalar sem internet</h3>
-    <hr size="2" noshade>
     <p>
         Sem rede no momento da instalacao? Baixe antes os pacotes que voce vai precisar (cada um eh um <code>.tar.gz</code> ou <code>.tar.bz2</code> no repositorio), copie para a midia de instalacao e, depois de instalado, extraia em <code>/</code>:
     </p>
@@ -75,9 +74,9 @@
         Depois, com rede por cabo, USB tethering ou o proprio Wi-Fi, o <code>dumpkg</code> assume. Para o Wi-Fi nao ha pressa: o caminho comum eh instalar o sistema, ligar um cabo ou o tethering, instalar o <code>br-wifi</code> e o firmware, e dai em diante usar so o Wi-Fi.
     </p>
 
-    <br>
     <hr size="1" noshade>
-    <p><font size="2">BaseRoot Linux 220018112026 Pre-Alpha -- site atualizado em 18/11/2026.</font></p>
+    <p><font size="2"><a href="index.html">&lt;&lt; Wiki</a> | <a href="primeiro-boot.html">&lt; Primeiro boot</a> | <a href="usuarios.html">Usuarios e grupos &gt;</a></font></p>
+    <p><font size="2"><i>Ultima atualizacao: 18/11/2026</i></font></p>
 
 </body>
 </html>

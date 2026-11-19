@@ -1,17 +1,20 @@
 <!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 3.2 Final//EN">
 <html>
 <head>
-    <title>O sistema</title>
+    <title>BaseRoot Wiki - O sistema</title>
 </head>
 <body bgcolor="#FFFFFF" text="#000000" link="#B30000" vlink="#550000">
-    <a name="componentes"></a>
-    <h2>O Sistema</h2>
+
+    <p><font size="2"><a href="index.html">&lt;&lt; Wiki</a> | <a href="pacotes-lista.html">Lista de pacotes &gt;</a></font></p>
+    <h2>O sistema</h2>
     <hr size="2" noshade>
     <p>
         O <b>BaseRoot Linux</b> eh uma distribuicao minimalista x86_64 construida do zero com <b>musl libc</b>, <b>toybox</b> e <b>mksh</b>.
         O sistema utiliza o bootloader <b>Limine</b> com suporte a UEFI e BIOS, e o init system <b>sinit</b>, com scripts simples em <code>/etc/init.d</code>.
         O gerenciamento de pacotes eh feito pelo <b>dumpkg</b> (ou pelo <b>spkg</b>), incluidos na instalacao base.
     </p>
+    <a name="componentes"></a>
+    <h3>Componentes</h3>
     <table width="100%" bgcolor="#FAFAFA" border="1" cellpadding="5" cellspacing="0">
         <tr bgcolor="#E8E8E8"><td><b>Componente</b></td><td><b>Versao</b></td><td><b>Para que serve</b></td></tr>
         <tr><td valign="top">Kernel Linux</td><td valign="top">6.1.187 LTS (-baseroot)</td><td valign="top">drivers i915, bochs-drm, rede, Wi-Fi, USB tethering</td></tr>
@@ -31,10 +34,8 @@
         <tr><td valign="top">PulseAudio / ALSA</td><td valign="top">17.0 / 1.2.14</td><td valign="top">audio</td></tr>
         <tr><td valign="top">Firefox ESR</td><td valign="top">153.7.0-esr</td><td valign="top">navegador</td></tr>
     </table>
-    <br>
     <a name="kernel"></a>
     <h3>Kernel</h3>
-    <hr size="2" noshade>
     <p>
         O kernel eh o <b>Linux 6.1 LTS</b> (versao 6.1.187), com o sufixo <code>-baseroot</code>. Ele sobe direto do disco, sem initramfs, e traz embutido o que eh preciso para iniciar: sistemas de arquivos (ext2/3/4, FAT, exFAT), controladores de disco (SATA, NVMe), tabelas GPT e MBR, UEFI com EFI stub, video (<i>i915</i>, <i>bochs-drm</i>, <i>virtio-gpu</i>, VGA e VESA) e USB tethering (CDC Ether, RNDIS, iPhone).
     </p>
@@ -49,10 +50,8 @@
         <li>Para o Firefox: namespaces (<code>USER_NS</code>, <code>PID_NS</code>, <code>NET_NS</code>, <code>IPC_NS</code>, <code>UTS_NS</code>), <code>SECCOMP_FILTER</code>, <code>SYSVIPC</code> e <code>/dev/shm</code> como tmpfs.</li>
         <li>Para notebook: <code>ACPI_BATTERY</code>, <code>ACPI_AC</code> e <code>ACPI_BUTTON</code> como <code>=y</code>, pois nada carrega modulo sozinho.</li>
     </ul>
-    <br>
     <a name="firmware"></a>
     <h3>Firmware</h3>
-    <hr size="2" noshade>
     <p>
         Os firmwares ficam em pacotes separados, um por familia de hardware, todos da versao <b>linux-firmware 20261019</b>. Instale <b>so o do seu hardware</b> -- descubra com <code>lspci</code> ou <code>lsusb</code>. Os arquivos vao para <code>/lib/firmware</code> e o kernel descomprime os <code>.zst</code> sozinho.
     </p>
@@ -71,23 +70,19 @@
         <tr><td valign="top"><code>wireless-regdb</code></td><td valign="top">Banco regulatorio assinado, exigido pelo kernel para o Wi-Fi.</td></tr>
     </table>
     <p>Exemplo: <code>dumpkg-install firmware-iwlwifi-ax200 wireless-regdb</code></p>
-    <br>
     <a name="ferramentas"></a>
     <h3>Ferramentas do BaseRoot (br-*)</h3>
-    <hr size="2" noshade>
     <table width="100%" bgcolor="#FAFAFA" border="1" cellpadding="5" cellspacing="0">
         <tr bgcolor="#E8E8E8"><td><b>Comando</b></td><td><b>O que faz</b></td></tr>
         <tr><td valign="top"><code>setup</code></td><td valign="top">instalador em modo texto (veja <a href="instalacao.html#setup">Setup</a>)</td></tr>
-        <tr><td valign="top"><code>setup-users</code></td><td valign="top">cria o primeiro usuario (o instalador chama ele no fim)</td></tr>
-        <tr><td valign="top"><code>service</code></td><td valign="top">liga e desliga servicos do boot: <code>service dropbear enable</code>, <code>service dropbear disable</code></td></tr>
+        <tr><td valign="top"><code>setup-users</code></td><td valign="top">cria o primeiro usuario (o instalador chama ele no fim; veja <a href="usuarios.html">Usuarios e grupos</a>)</td></tr>
+        <tr><td valign="top"><code>service</code></td><td valign="top">liga e desliga servicos do boot: <code>service dropbear enable</code>, <code>service dropbear disable</code> (veja <a href="servicos.html">Servicos e logs</a>)</td></tr>
         <tr><td valign="top"><code>br-wifi</code>, <code>br-wifi-tui</code></td><td valign="top">gerenciador de Wi-Fi (veja <a href="rede.html#brwifi">br-wifi</a>)</td></tr>
         <tr><td valign="top"><code>br-usermgr</code></td><td valign="top">gerenciador de usuarios: criar, remover, trocar senha e listar</td></tr>
         <tr><td valign="top"><code>pfetch</code>, <code>ufetch</code></td><td valign="top">informacoes do sistema no terminal</td></tr>
     </table>
-    <br>
     <a name="boot"></a>
     <h3>Inicializacao</h3>
-    <hr size="2" noshade>
     <p>
         O init chama <code>/etc/init.d/rcS</code>, que roda os scripts de servico em ordem numerica (por exemplo <code>S11-udev</code>, <code>S16-dbus</code>, <code>S20-hostname</code>, <code>S32-wifi</code>, <code>S40-dropbear</code>). A rede por cabo sobe sozinha com DHCP. Um servico roda no boot quando o script esta <b>executavel</b>: ligar ou desligar eh so um <code>chmod</code>, ou o comando <code>service &lt;nome&gt; enable</code> / <code>disable</code>.
     </p>
@@ -95,9 +90,9 @@
         O <b>S32-wifi</b> vem desligado (veja <a href="rede.html#brwifi">br-wifi</a>). O <b>Dropbear</b> (servidor SSH, porta 22) tambem vem desligado: o Setup pergunta se voce quer ligar, ou depois use <code>service dropbear enable</code>. As contas precisam ter senha para conseguir entrar.
     </p>
 
-    <br>
     <hr size="1" noshade>
-    <p><font size="2">BaseRoot Linux 220018112026 Pre-Alpha -- site atualizado em 18/11/2026.</font></p>
+    <p><font size="2"><a href="index.html">&lt;&lt; Wiki</a> | <a href="pacotes-lista.html">Lista de pacotes &gt;</a></font></p>
+    <p><font size="2"><i>Ultima atualizacao: 18/11/2026</i></font></p>
 
 </body>
 </html>

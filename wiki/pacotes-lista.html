@@ -1,79 +1,18 @@
 <!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 3.2 Final//EN">
 <html>
 <head>
-    <title>Pacotes</title>
+    <title>BaseRoot Wiki - Lista de pacotes</title>
 </head>
 <body bgcolor="#FFFFFF" text="#000000" link="#B30000" vlink="#550000">
-    <a name="dumpkg"></a>
-    <h2>DUMPKG</h2>
-    <hr size="2" noshade>
-    <p>
-        O <b>dumpkg</b> eh um gerenciador de pacotes binarios minimalista escrito em shell POSIX puro.
-        Funciona atraves de receitas (<i>.binfile</i>) com informacoes do pacote, URL de download, checksum e dependencias.
-        Nao resolve dependencias automaticamente por padrao, mas a flag <code>-d</code> instala tudo na ordem certa: o dumpkg mostra a <i>install order</i> antes de comecar.
-    </p>
-    <p><b>Principais funcionalidades:</b></p>
-    <ul>
-        <li><code>dumpkg-install &lt;pkg&gt;</code> -- instala um ou mais pacotes</li>
-        <li><code>dumpkg-install -d &lt;pkg&gt;</code> -- instala com dependencias, na ordem certa</li>
-        <li><code>dumpkg-remove &lt;pkg&gt;</code> -- remove um ou mais pacotes</li>
-        <li><code>dumpkg-update</code> -- sincroniza receitas e atualiza pacotes</li>
-        <li><code>dumpkg list</code> -- lista pacotes instalados</li>
-        <li><code>dumpkg search &lt;pkg&gt;</code> -- pesquisa no repositorio</li>
-        <li><code>dumpkg deptree &lt;pkg&gt;</code> -- exibe arvore de dependencias</li>
-        <li><code>dumpkg verify &lt;pkg&gt;</code> -- verifica integridade dos arquivos</li>
-    </ul>
-    <p>
-        Cada pacote baixado eh conferido pelo checksum antes de ser extraido. Exemplo completo:
-    </p>
-<pre>dumpkg-update
-dumpkg search firefox
-dumpkg deptree firefox
-dumpkg-install -d firefox</pre>
-    <p>
-        Codigo-fonte disponivel em: <a href="https://www.github.com/LuuunodotXD/Dump-Package-Manager" target="_blank">www.github.com/LuuunodotXD/Dump-Package-Manager</a>
-    </p>
-    <br>
 
-    <a name="spkg"></a>
-    <h2>spkg</h2>
+    <p><font size="2"><a href="index.html">&lt;&lt; Wiki</a> | <a href="pacotes.html">&lt; Pacotes</a> | <a href="sistema.html">O sistema</a></font></p>
+    <a name="lista"></a><h2>Lista de pacotes (225)</h2>
     <hr size="2" noshade>
-    <p>
-        O <b>spkg</b> eh um gerenciador de pacotes alternativo e ainda mais simples, compativel com o shell do toybox.
-        Usa um repositorio no formato <b>JSON</b> e nao depende de receitas -- apenas uma lista de pacotes com nome, versao e link de download.
-        <i>De proposito, nao resolve dependencias nem confere checksum</i>: eh para quem quer o minimo. Quando precisar disso, use o dumpkg.
-    </p>
-    <p><b>Comandos:</b></p>
-    <ul>
-        <li><code>spkg sync</code> -- sincroniza o repositorio</li>
-        <li><code>spkg add &lt;pkg&gt;</code> -- instala um ou mais pacotes</li>
-        <li><code>spkg del &lt;pkg&gt;</code> -- remove um ou mais pacotes</li>
-        <li><code>spkg up</code> -- atualiza todos os pacotes</li>
-        <li><code>spkg list</code> -- lista pacotes instalados</li>
-    </ul>
-    <br>
-    <a name="firefox"></a>
-    <h2>Firefox</h2>
-    <hr size="2" noshade>
-    <p>
-        O <b>Firefox ESR 153.7.0-esr</b> eh o build do Alpine Linux (que tambem usa musl), reempacotado para o BaseRoot. Como o repositorio ja tem GTK, X11, Mesa e fontes, o pacote <code>firefox</code> declara so o que falta como dependencia.
-    </p>
-<pre>dumpkg-install -d firefox
-startx            # e, no xterm:
-firefox</pre>
-    <p><b>Para funcionar bem:</b></p>
-    <ul>
-        <li>Um kernel com <i>user namespaces</i>, <i>seccomp</i> e <i>SysV IPC</i> (veja <a href="sistema.html#kernel">Kernel</a>) e <code>/dev/shm</code> montado.</li>
-        <li>Dentro do QEMU, ligue o KVM (<code>-cpu host -enable-kvm</code>); o CPU generico do QEMU eh lento e pode faltar instrucao.</li>
-        <li>Os avisos <code>glx: failed to create dri3 screen</code> e <code>failed to load driver: virtio_gpu</code> sao normais no QEMU: o Firefox usa renderizacao por software.</li>
-        <li>O aviso do <code>dbus-launch</code> some abrindo com <code>dbus-run-session firefox</code>.</li>
-    </ul>
-    <br>
-    <a name="lista"></a>
-    <h2>Lista de pacotes (225)</h2>
-    <hr size="2" noshade>
-    <p>Todos os pacotes do repositorio, por assunto. Instale com <code>dumpkg-install -d &lt;nome&gt;</code>.</p>
-    <h4>Sistema e utilitarios (20)</h4>
+    <p>Todos os pacotes do repositorio, por assunto (225 no total). Instale com <code>dumpkg-install -d &lt;nome&gt;</code>; veja <a href="pacotes.html">Pacotes</a> para o uso do dumpkg e do spkg.</p>
+    <p><font size="2">Ir para: <a href="#sistema">Sistema e utilitarios</a> | <a href="#dev">Desenvolvimento</a> | <a href="#rede">Rede e Wi-Fi</a> | <a href="#navegadores">Navegadores</a> | <a href="#deps-firefox">Dependencias do Firefox</a> | <a href="#video">Video e codecs</a> | <a href="#audio">Audio</a> | <a href="#imagens">Imagens</a> | <a href="#x11-programas">X11: servidor e programas</a> | <a href="#x11-libs">X11: bibliotecas e entrada</a> | <a href="#gtk">GTK e interface</a> | <a href="#3d">Graficos 3D</a> | <a href="#fontes">Fontes</a> | <a href="#firmware">Firmware</a></font></p>
+
+    <a name="sistema"></a>
+    <h3>Sistema e utilitarios (20)</h3>
     <table width="100%" bgcolor="#FAFAFA" border="1" cellpadding="4" cellspacing="0">
         <tr><td width="33%"><code>hello</code> <font size="2">1.0</font></td><td width="33%"><code>greet</code> <font size="2">1.0</font></td><td width="33%"><code>htop</code> <font size="2">3.5.3</font></td></tr>
         <tr><td width="33%"><code>pfetch</code> <font size="2">0.6.0</font></td><td width="33%"><code>ufetch</code> <font size="2">1.1.0</font></td><td width="33%"><code>shsu</code> <font size="2">1.0.0</font></td></tr>
@@ -83,21 +22,25 @@ firefox</pre>
         <tr><td width="33%"><code>ca-certificates</code> <font size="2">2026.11.06</font></td><td width="33%"><code>dbus</code> <font size="2">1.16.0</font></td><td width="33%"><code>eudev</code> <font size="2">3.2.14</font></td></tr>
         <tr><td width="33%"><code>expat</code> <font size="2">2.7.1</font></td><td width="33%"><code>linux-modules</code> <font size="2">6.1.187-baseroot</font></td><td width="33%"></td></tr>
     </table>
-    <h4>Desenvolvimento (5)</h4>
+    <a name="dev"></a>
+    <h3>Desenvolvimento (5)</h3>
     <table width="100%" bgcolor="#FAFAFA" border="1" cellpadding="4" cellspacing="0">
         <tr><td width="33%"><code>tcc</code> <font size="2">0.9.28rc</font></td><td width="33%"><code>make</code> <font size="2">4.4.1</font></td><td width="33%"><code>gcc</code> <font size="2">15.2.0</font></td></tr>
         <tr><td width="33%"><code>binutils</code> <font size="2">2.44</font></td><td width="33%"><code>build-base</code> <font size="2">1.0</font></td><td width="33%"></td></tr>
     </table>
-    <h4>Rede e Wi-Fi (5)</h4>
+    <a name="rede"></a>
+    <h3>Rede e Wi-Fi (5)</h3>
     <table width="100%" bgcolor="#FAFAFA" border="1" cellpadding="4" cellspacing="0">
         <tr><td width="33%"><code>br-wifi</code> <font size="2">3.2</font></td><td width="33%"><code>iw</code> <font size="2">6.9</font></td><td width="33%"><code>wpa_supplicant</code> <font size="2">2.11.1</font></td></tr>
         <tr><td width="33%"><code>libnl</code> <font size="2">3.11.0</font></td><td width="33%"><code>wireless-regdb</code> <font size="2">2026.09.03</font></td><td width="33%"></td></tr>
     </table>
-    <h4>Navegadores (3)</h4>
+    <a name="navegadores"></a>
+    <h3>Navegadores (3)</h3>
     <table width="100%" bgcolor="#FAFAFA" border="1" cellpadding="4" cellspacing="0">
         <tr><td width="33%"><code>firefox</code> <font size="2">153.7.0-esr</font></td><td width="33%"><code>netsurf</code> <font size="2">3.11</font></td><td width="33%"><code>links</code> <font size="2">2.30</font></td></tr>
     </table>
-    <h4>Dependencias do Firefox (14)</h4>
+    <a name="deps-firefox"></a>
+    <h3>Dependencias do Firefox (14)</h3>
     <table width="100%" bgcolor="#FAFAFA" border="1" cellpadding="4" cellspacing="0">
         <tr><td width="33%"><code>nspr</code> <font size="2">4.38.2</font></td><td width="33%"><code>nss</code> <font size="2">3.133</font></td><td width="33%"><code>sqlite-libs</code> <font size="2">3.53.4</font></td></tr>
         <tr><td width="33%"><code>icu</code> <font size="2">78.1</font></td><td width="33%"><code>icu-libs</code> <font size="2">78.1</font></td><td width="33%"><code>icu-data-full</code> <font size="2">78.1</font></td></tr>
@@ -105,7 +48,8 @@ firefox</pre>
         <tr><td width="33%"><code>libstdc++</code> <font size="2">15.2.0</font></td><td width="33%"><code>libgcc</code> <font size="2">15.2.0</font></td><td width="33%"><code>libgomp</code> <font size="2">15.2.0</font></td></tr>
         <tr><td width="33%"><code>numactl</code> <font size="2">2.0.19</font></td><td width="33%"><code>scudo-malloc</code> <font size="2">22.1.3</font></td><td width="33%"></td></tr>
     </table>
-    <h4>Video e codecs (19)</h4>
+    <a name="video"></a>
+    <h3>Video e codecs (19)</h3>
     <table width="100%" bgcolor="#FAFAFA" border="1" cellpadding="4" cellspacing="0">
         <tr><td width="33%"><code>ffmpeg7-libavcodec</code> <font size="2">7.1.5</font></td><td width="33%"><code>ffmpeg7-libavutil</code> <font size="2">7.1.5</font></td><td width="33%"><code>ffmpeg7-libswresample</code> <font size="2">7.1.5</font></td></tr>
         <tr><td width="33%"><code>aom-libs</code> <font size="2">3.14.1</font></td><td width="33%"><code>libdav1d</code> <font size="2">1.5.3</font></td><td width="33%"><code>x264-libs</code> <font size="2">0.164.3108</font></td></tr>
@@ -115,20 +59,23 @@ firefox</pre>
         <tr><td width="33%"><code>libvdpau</code> <font size="2">1.5</font></td><td width="33%"><code>libvpl</code> <font size="2">2.15.0</font></td><td width="33%"><code>soxr</code> <font size="2">0.1.3</font></td></tr>
         <tr><td width="33%"><code>xvidcore</code> <font size="2">1.3.7</font></td><td width="33%"></td><td width="33%"></td></tr>
     </table>
-    <h4>Audio (11)</h4>
+    <a name="audio"></a>
+    <h3>Audio (11)</h3>
     <table width="100%" bgcolor="#FAFAFA" border="1" cellpadding="4" cellspacing="0">
         <tr><td width="33%"><code>alsa-lib</code> <font size="2">1.2.14</font></td><td width="33%"><code>alsa-ucm-conf</code> <font size="2">1.2.14</font></td><td width="33%"><code>alsa-utils</code> <font size="2">1.2.14</font></td></tr>
         <tr><td width="33%"><code>pulseaudio</code> <font size="2">17.0</font></td><td width="33%"><code>flac</code> <font size="2">1.4.3</font></td><td width="33%"><code>lame</code> <font size="2">3.100</font></td></tr>
         <tr><td width="33%"><code>libogg</code> <font size="2">1.3.5</font></td><td width="33%"><code>libvorbis</code> <font size="2">1.3.7</font></td><td width="33%"><code>mpg123</code> <font size="2">1.32.10</font></td></tr>
         <tr><td width="33%"><code>opus</code> <font size="2">1.5.2</font></td><td width="33%"><code>libsndfile</code> <font size="2">1.2.2.1</font></td><td width="33%"></td></tr>
     </table>
-    <h4>Imagens (9)</h4>
+    <a name="imagens"></a>
+    <h3>Imagens (9)</h3>
     <table width="100%" bgcolor="#FAFAFA" border="1" cellpadding="4" cellspacing="0">
         <tr><td width="33%"><code>giflib</code> <font size="2">5.2.2</font></td><td width="33%"><code>libpng</code> <font size="2">1.6.59</font></td><td width="33%"><code>libtiff</code> <font size="2">4.6.0</font></td></tr>
         <tr><td width="33%"><code>libwebp</code> <font size="2">1.4.0</font></td><td width="33%"><code>libjpeg-turbo</code> <font size="2">3.0.4</font></td><td width="33%"><code>librsvg</code> <font size="2">2.40.10</font></td></tr>
         <tr><td width="33%"><code>libcroco</code> <font size="2">0.6.13</font></td><td width="33%"><code>imlib2</code> <font size="2">1.12.3</font></td><td width="33%"><code>feh</code> <font size="2">3.10.3</font></td></tr>
     </table>
-    <h4>X11: servidor e programas (39)</h4>
+    <a name="x11-programas"></a>
+    <h3>X11: servidor e programas (39)</h3>
     <table width="100%" bgcolor="#FAFAFA" border="1" cellpadding="4" cellspacing="0">
         <tr><td width="33%"><code>setxkbmap</code> <font size="2">1.3.4</font></td><td width="33%"><code>twm</code> <font size="2">1.0.12</font></td><td width="33%"><code>xauth</code> <font size="2">1.1.3</font></td></tr>
         <tr><td width="33%"><code>xbitmaps</code> <font size="2">1.1.3</font></td><td width="33%"><code>xcb-util</code> <font size="2">0.4.1</font></td><td width="33%"><code>xcb-util-cursor</code> <font size="2">0.1.5</font></td></tr>
@@ -144,7 +91,8 @@ firefox</pre>
         <tr><td width="33%"><code>xrdb</code> <font size="2">1.2.2</font></td><td width="33%"><code>xrefresh</code> <font size="2">1.1.0</font></td><td width="33%"><code>xset</code> <font size="2">1.2.5</font></td></tr>
         <tr><td width="33%"><code>xsetroot</code> <font size="2">1.1.3</font></td><td width="33%"><code>xterm</code> <font size="2">412</font></td><td width="33%"><code>xwininfo</code> <font size="2">1.1.6</font></td></tr>
     </table>
-    <h4>X11: bibliotecas e entrada (37)</h4>
+    <a name="x11-libs"></a>
+    <h3>X11: bibliotecas e entrada (37)</h3>
     <table width="100%" bgcolor="#FAFAFA" border="1" cellpadding="4" cellspacing="0">
         <tr><td width="33%"><code>libevdev</code> <font size="2">1.13.3</font></td><td width="33%"><code>libfontenc</code> <font size="2">1.1.8</font></td><td width="33%"><code>libice</code> <font size="2">1.1.2</font></td></tr>
         <tr><td width="33%"><code>libinput</code> <font size="2">1.28.1</font></td><td width="33%"><code>libsm</code> <font size="2">1.2.5</font></td><td width="33%"><code>libx11</code> <font size="2">1.8.12</font></td></tr>
@@ -160,7 +108,8 @@ firefox</pre>
         <tr><td width="33%"><code>libxvmc</code> <font size="2">1.0.14</font></td><td width="33%"><code>libxxf86dga</code> <font size="2">1.1.6</font></td><td width="33%"><code>libxxf86vm</code> <font size="2">1.1.6</font></td></tr>
         <tr><td width="33%"><code>mtdev</code> <font size="2">1.1.7</font></td><td width="33%"></td><td width="33%"></td></tr>
     </table>
-    <h4>GTK e interface (25)</h4>
+    <a name="gtk"></a>
+    <h3>GTK e interface (25)</h3>
     <table width="100%" bgcolor="#FAFAFA" border="1" cellpadding="4" cellspacing="0">
         <tr><td width="33%"><code>gtk2</code> <font size="2">2.24.33</font></td><td width="33%"><code>gtk3</code> <font size="2">3.24.43</font></td><td width="33%"><code>gtk-defaults</code> <font size="2">1.0</font></td></tr>
         <tr><td width="33%"><code>glib</code> <font size="2">2.80.5</font></td><td width="33%"><code>gdk-pixbuf</code> <font size="2">2.42.12</font></td><td width="33%"><code>cairo</code> <font size="2">1.18.0</font></td></tr>
@@ -172,18 +121,22 @@ firefox</pre>
         <tr><td width="33%"><code>libltdl</code> <font size="2">2.5.4</font></td><td width="33%"><code>pcre2</code> <font size="2">10.44</font></td><td width="33%"><code>libxml2</code> <font size="2">2.12.9</font></td></tr>
         <tr><td width="33%"><code>nettle</code> <font size="2">3.10.1</font></td><td width="33%"></td><td width="33%"></td></tr>
     </table>
-    <h4>Graficos 3D (6)</h4>
+    <a name="3d"></a>
+    <h3>Graficos 3D (6)</h3>
     <table width="100%" bgcolor="#FAFAFA" border="1" cellpadding="4" cellspacing="0">
         <tr><td width="33%"><code>mesa</code> <font size="2">24.0.9</font></td><td width="33%"><code>mesa-demos</code> <font size="2">9.0.0</font></td><td width="33%"><code>glu</code> <font size="2">9.0.3</font></td></tr>
         <tr><td width="33%"><code>libdrm</code> <font size="2">2.4.124</font></td><td width="33%"><code>libpciaccess</code> <font size="2">0.18.1</font></td><td width="33%"><code>libxshmfence</code> <font size="2">1.3.3</font></td></tr>
     </table>
-    <h4>Fontes (7)</h4>
+    <a name="fontes"></a>
+    <h3>Fontes (7)</h3>
     <table width="100%" bgcolor="#FAFAFA" border="1" cellpadding="4" cellspacing="0">
         <tr><td width="33%"><code>font-alias</code> <font size="2">1.0.5</font></td><td width="33%"><code>font-cursor-misc</code> <font size="2">1.0.4</font></td><td width="33%"><code>font-dejavu</code> <font size="2">2.37</font></td></tr>
         <tr><td width="33%"><code>font-encodings</code> <font size="2">1.1.0</font></td><td width="33%"><code>font-misc-misc</code> <font size="2">1.1.3</font></td><td width="33%"><code>font-spleen</code> <font size="2">2.1.0</font></td></tr>
         <tr><td width="33%"><code>font-terminus</code> <font size="2">4.49.1</font></td><td width="33%"></td><td width="33%"></td></tr>
     </table>
-    <h4>Firmware (25)</h4>
+    <a name="firmware"></a>
+    <h3>Firmware (25)</h3>
+    <p><font size="2">Instale so o do seu hardware: veja <a href="sistema.html#firmware">Firmware</a>.</font></p>
     <table width="100%" bgcolor="#FAFAFA" border="1" cellpadding="4" cellspacing="0">
         <tr><td width="33%"><code>firmware-ath10k</code> <font size="2">20261019</font></td><td width="33%"><code>firmware-ath11k</code> <font size="2">20261019</font></td><td width="33%"><code>firmware-ath9k_htc</code> <font size="2">20261019</font></td></tr>
         <tr><td width="33%"><code>firmware-audio</code> <font size="2">20261019</font></td><td width="33%"><code>firmware-bluetooth</code> <font size="2">20261019</font></td><td width="33%"><code>firmware-brcm</code> <font size="2">20261019</font></td></tr>
@@ -195,37 +148,11 @@ firefox</pre>
         <tr><td width="33%"><code>firmware-rtl_nic</code> <font size="2">20261019</font></td><td width="33%"><code>firmware-rtlwifi</code> <font size="2">20261019</font></td><td width="33%"><code>firmware-rtw88</code> <font size="2">20261019</font></td></tr>
         <tr><td width="33%"><code>firmware-rtw89</code> <font size="2">20261019</font></td><td width="33%"></td><td width="33%"></td></tr>
     </table>
-    <br>
-    <a name="receitas"></a>
-    <h2>Receitas (.binfile)</h2>
-    <hr size="2" noshade>
-    <p>
-        Uma receita eh um arquivo de texto simples, um campo por linha (<code>campo=valor</code>). Exemplo do <code>nss</code>:
-    </p>
-<pre>name=nss
-version=3.133
-description=Network Security Services: TLS and certificates
-url=https://raw.githubusercontent.com/LuuunodotXD/Dump-Packages/main/main/nss-3.133.tar.gz
-compression=gzip
-md5=...
-sha256=...
-deps=nspr sqlite-libs zlib
-postinstall=
-conffiles=</pre>
-    <table width="100%" bgcolor="#FAFAFA" border="1" cellpadding="5" cellspacing="0">
-        <tr bgcolor="#E8E8E8"><td><b>Campo</b></td><td><b>Significado</b></td></tr>
-        <tr><td valign="top"><code>name</code>, <code>version</code>, <code>description</code></td><td valign="top">identificacao do pacote</td></tr>
-        <tr><td valign="top"><code>url</code>, <code>compression</code></td><td valign="top">onde baixar o tarball (gzip ou bzip2) e como descomprimir</td></tr>
-        <tr><td valign="top"><code>md5</code>, <code>sha256</code></td><td valign="top">checksums conferidos antes de instalar</td></tr>
-        <tr><td valign="top"><code>deps</code></td><td valign="top">outros pacotes, separados por espaco (usados por <code>-d</code>)</td></tr>
-        <tr><td valign="top"><code>postinstall</code></td><td valign="top">um comando, em uma linha, rodado depois da extracao (sem o caractere <code>=</code>)</td></tr>
-        <tr><td valign="top"><code>conffiles</code></td><td valign="top">arquivos de configuracao que nao devem ser sobrescritos</td></tr>
-    </table>
-    <p>As receitas ficam em <a href="https://www.github.com/LuuunodotXD/Dump-Package-Recipes" target="_blank">Dump-Package-Recipes</a> e os binarios em <a href="https://www.github.com/LuuunodotXD/Dump-Packages" target="_blank">Dump-Packages</a>. Pacotes muito grandes (como o Firefox) ficam nos <i>Releases</i> do GitHub.</p>
+    
 
-    <br>
     <hr size="1" noshade>
-    <p><font size="2">BaseRoot Linux 220018112026 Pre-Alpha -- site atualizado em 18/11/2026.</font></p>
+    <p><font size="2"><a href="index.html">&lt;&lt; Wiki</a> | <a href="pacotes.html">&lt; Pacotes</a> | <a href="sistema.html">O sistema</a></font></p>
+    <p><font size="2"><i>Ultima atualizacao: 18/11/2026</i></font></p>
 
 </body>
 </html>

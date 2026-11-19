@@ -1,7 +1,7 @@
 <!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 3.2 Final//EN">
 <html>
 <head>
-    <title>Main</title>
+    <title>BaseRoot Linux - Projeto</title>
 </head>
 <body bgcolor="#FFFFFF" text="#000000" link="#B30000" vlink="#550000">
     <a name="sobre"></a>
@@ -12,6 +12,9 @@
     </p>
     <p>
         Tudo eh construido do zero com <b>musl libc</b>, <b>toybox</b> e <b>mksh</b>. Os pacotes sao compilados em uma maquina Alpine, testados no QEMU e em hardware real, e publicados em um repositorio aberto.
+    </p>
+    <p>
+        Os guias passo a passo (gravar a iso, instalar, rede, pacotes, SSH e mais) ficam na <a href="wiki/index.html">Wiki</a>.
     </p>
     <br>
 
@@ -92,49 +95,38 @@
     <a name="download"></a>
     <h3>Como baixar a iso e testar</h3>
     <hr size="2" noshade>
+    <p>A iso mais recente eh a <b>220018112026</b>. As versoes anteriores continuam disponiveis na tabela.</p>
     <table width="100%" bgcolor="#FAFAFA" border="2" cellpadding="8" cellspacing="0">
+        <tr bgcolor="#E8E8E8"><td><b>Versao</b></td><td><b>Data</b></td><td><b>Download</b></td></tr>
         <tr>
-            <td>
-                <p>Para baixar a <b>iso mais recente</b> <i>versao 220018112026</i> do BaseRoot Linux:</p>
-                <p><i>O link da iso desta versao sera publicado aqui assim que o upload terminar.</i></p>
+            <td valign="top">220018112026 <i>(mais recente)</i></td>
+            <td valign="top">18/11/2026</td>
+            <td valign="top"><i>O link da iso desta versao sera publicado aqui assim que o upload terminar.</i>
                 <!-- COLOQUE AQUI O LINK DA ISO 220018112026:
-                <pre><a href="LINK" target="_blank">LINK</a></pre> -->
-            </td>
+                <a href="LINK" target="_blank">Baixar</a> --></td>
         </tr>
-    </table>
-    <table width="100%" bgcolor="#FAFAFA" border="2" cellpadding="8" cellspacing="0">
         <tr>
-            <td>
-                <p>Para baixar a iso <i>anterior versao 110020092026</i> do BaseRoot Linux, acesse o link abaixo:</p>
-                <pre><a href="https://drive.google.com/file/d/1sIHYdMdfsXEkPS6g2lhgruAy3hrG-KYZ/view?usp=sharing" target="_blank">www.drive.google.com/file/d/1sIHYdMdfsXEkPS6g2lhgruAy3hrG-KYZ/view?usp=sharing</a></pre>
-            </td>
+            <td valign="top">110020092026</td>
+            <td valign="top">20/09/2026</td>
+            <td valign="top"><a href="https://drive.google.com/file/d/1sIHYdMdfsXEkPS6g2lhgruAy3hrG-KYZ/view?usp=sharing" target="_blank">Google Drive</a></td>
         </tr>
-    </table>
-    <table width="100%" bgcolor="#FAFAFA" border="2" cellpadding="8" cellspacing="0">
         <tr>
-            <td>
-                <p>Para baixar a iso <i>antiga versao 210018092026</i> do BaseRoot Linux, acesse o link abaixo:</p>
-                <pre><a href="https://drive.google.com/file/d/1-ku8dWWYjZuUldbRoNGFpq_ZkcejGJk3/view?usp=sharing" target="_blank">www.drive.google.com/file/d/1-ku8dWWYjZuUldbRoNGFpq_ZkcejGJk3/view?usp=sharing</a></pre>
-            </td>
+            <td valign="top">210018092026</td>
+            <td valign="top">18/09/2026</td>
+            <td valign="top"><a href="https://drive.google.com/file/d/1-ku8dWWYjZuUldbRoNGFpq_ZkcejGJk3/view?usp=sharing" target="_blank">Google Drive</a></td>
         </tr>
-    </table>
-    <table width="100%" bgcolor="#FAFAFA" border="2" cellpadding="8" cellspacing="0">
         <tr>
-            <td>
-                <p>Para baixar a iso <i>antiga versao 160018092026</i> do BaseRoot Linux, acesse o link abaixo:</p>
-                <pre><a href="https://drive.google.com/file/d/1YyZHioH73the32gmuZngGwNZ3J8Ita4-/view?usp=sharing" target="_blank">www.drive.google.com/file/d/1YyZHioH73the32gmuZngGwNZ3J8Ita4-/view?usp=sharing</a></pre>
-            </td>
+            <td valign="top">160018092026</td>
+            <td valign="top">18/09/2026</td>
+            <td valign="top"><a href="https://drive.google.com/file/d/1YyZHioH73the32gmuZngGwNZ3J8Ita4-/view?usp=sharing" target="_blank">Google Drive</a></td>
         </tr>
-    </table>
-    <table width="100%" bgcolor="#FAFAFA" border="2" cellpadding="8" cellspacing="0">
         <tr>
-            <td>
-                <p>Para baixar a iso <i>antiga versao 200016092026</i> do BaseRoot Linux, acesse o link abaixo:</p>
-                <pre><a href="https://drive.google.com/file/d/1FTaIwzSZWg-cJ6E7mePsYIXJ1-mFQnf9/view?usp=sharing" target="_blank">www.drive.google.com/file/d/1FTaIwzSZWg-cJ6E7mePsYIXJ1-mFQnf9/view?usp=sharing</a></pre>
-            </td>
+            <td valign="top">200016092026</td>
+            <td valign="top">16/09/2026</td>
+            <td valign="top"><a href="https://drive.google.com/file/d/1FTaIwzSZWg-cJ6E7mePsYIXJ1-mFQnf9/view?usp=sharing" target="_blank">Google Drive</a></td>
         </tr>
     </table>
-    <p><font size="2">Dica: a iso funciona no QEMU (use <code>-cpu host -enable-kvm</code> se puder) e em hardware real. Veja <a href="instalacao.html#requisitos">Requisitos</a> e <a href="instalacao.html#setup">Setup</a>.</font></p>
+    <p><font size="2">Dica: a iso funciona no QEMU (use <code>-cpu host -enable-kvm</code> se puder) e em hardware real. Veja <a href="wiki/gravar-iso.html">Gravar a ISO</a>, <a href="wiki/qemu.html">QEMU</a>, <a href="wiki/instalacao.html#requisitos">Requisitos</a> e <a href="wiki/instalacao.html#setup">Setup</a>.</font></p>
     <br>
     <a name="fontes"></a>
     <h3>Codigo-fonte e repositorios:</h3>

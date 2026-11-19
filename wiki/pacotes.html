@@ -1,0 +1,103 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 3.2 Final//EN">
+<html>
+<head>
+    <title>BaseRoot Wiki - Pacotes</title>
+</head>
+<body bgcolor="#FFFFFF" text="#000000" link="#B30000" vlink="#550000">
+
+    <p><font size="2"><a href="index.html">&lt;&lt; Wiki</a> | <a href="usuarios.html">&lt; Usuarios e grupos</a> | <a href="rede.html">Rede &gt;</a></font></p>
+    <h2>Pacotes</h2>
+    <hr size="2" noshade>
+    <p>O BaseRoot tem dois gerenciadores de pacotes: o <b>dumpkg</b> (com dependencias e checksum) e o <b>spkg</b> (o minimo possivel). Os pacotes disponiveis estao na <a href="pacotes-lista.html">Lista de pacotes</a>.</p>
+
+    <a name="dumpkg"></a>
+    <h3>DUMPKG</h3>
+    <p>
+        O <b>dumpkg</b> eh um gerenciador de pacotes binarios minimalista escrito em shell POSIX puro.
+        Funciona atraves de receitas (<i>.binfile</i>) com informacoes do pacote, URL de download, checksum e dependencias.
+        Nao resolve dependencias automaticamente por padrao, mas a flag <code>-d</code> instala tudo na ordem certa: o dumpkg mostra a <i>install order</i> antes de comecar.
+    </p>
+    <p><b>Principais funcionalidades:</b></p>
+    <ul>
+        <li><code>dumpkg-install &lt;pkg&gt;</code> -- instala um ou mais pacotes</li>
+        <li><code>dumpkg-install -d &lt;pkg&gt;</code> -- instala com dependencias, na ordem certa</li>
+        <li><code>dumpkg-remove &lt;pkg&gt;</code> -- remove um ou mais pacotes</li>
+        <li><code>dumpkg-update</code> -- sincroniza receitas e atualiza pacotes</li>
+        <li><code>dumpkg list</code> -- lista pacotes instalados</li>
+        <li><code>dumpkg search &lt;pkg&gt;</code> -- pesquisa no repositorio</li>
+        <li><code>dumpkg deptree &lt;pkg&gt;</code> -- exibe arvore de dependencias</li>
+        <li><code>dumpkg verify &lt;pkg&gt;</code> -- verifica integridade dos arquivos</li>
+    </ul>
+    <p>
+        Cada pacote baixado eh conferido pelo checksum antes de ser extraido. Exemplo completo:
+    </p>
+<pre>dumpkg-update
+dumpkg search firefox
+dumpkg deptree firefox
+dumpkg-install -d firefox</pre>
+    <p>
+        Codigo-fonte disponivel em: <a href="https://www.github.com/LuuunodotXD/Dump-Package-Manager" target="_blank">www.github.com/LuuunodotXD/Dump-Package-Manager</a>
+    </p>
+
+    <a name="spkg"></a>
+    <h3>spkg</h3>
+    <p>
+        O <b>spkg</b> eh um gerenciador de pacotes alternativo e ainda mais simples, compativel com o shell do toybox.
+        Usa um repositorio no formato <b>JSON</b> e nao depende de receitas -- apenas uma lista de pacotes com nome, versao e link de download.
+        <i>De proposito, nao resolve dependencias nem confere checksum</i>: eh para quem quer o minimo. Quando precisar disso, use o dumpkg.
+    </p>
+    <p><b>Comandos:</b></p>
+    <ul>
+        <li><code>spkg sync</code> -- sincroniza o repositorio</li>
+        <li><code>spkg add &lt;pkg&gt;</code> -- instala um ou mais pacotes</li>
+        <li><code>spkg del &lt;pkg&gt;</code> -- remove um ou mais pacotes</li>
+        <li><code>spkg up</code> -- atualiza todos os pacotes</li>
+        <li><code>spkg list</code> -- lista pacotes instalados</li>
+    </ul>
+    <a name="firefox"></a>
+    <h3>Firefox</h3>
+    <p>
+        O <b>Firefox ESR 153.7.0-esr</b> eh o build do Alpine Linux (que tambem usa musl), reempacotado para o BaseRoot. Como o repositorio ja tem GTK, X11, Mesa e fontes, o pacote <code>firefox</code> declara so o que falta como dependencia.
+    </p>
+<pre>dumpkg-install -d firefox
+startx            # e, no xterm:
+firefox</pre>
+    <p><b>Para funcionar bem:</b></p>
+    <ul>
+        <li>Um kernel com <i>user namespaces</i>, <i>seccomp</i> e <i>SysV IPC</i> (veja <a href="sistema.html#kernel">Kernel</a>) e <code>/dev/shm</code> montado.</li>
+        <li>Dentro do QEMU, ligue o KVM (<code>-cpu host -enable-kvm</code>); o CPU generico do QEMU eh lento e pode faltar instrucao.</li>
+        <li>Os avisos <code>glx: failed to create dri3 screen</code> e <code>failed to load driver: virtio_gpu</code> sao normais no QEMU: o Firefox usa renderizacao por software.</li>
+        <li>O aviso do <code>dbus-launch</code> some abrindo com <code>dbus-run-session firefox</code>.</li>
+    </ul>
+    <a name="receitas"></a>
+    <h3>Receitas (.binfile)</h3>
+    <p>
+        Uma receita eh um arquivo de texto simples, um campo por linha (<code>campo=valor</code>). Exemplo do <code>nss</code>:
+    </p>
+<pre>name=nss
+version=3.133
+description=Network Security Services: TLS and certificates
+url=https://raw.githubusercontent.com/LuuunodotXD/Dump-Packages/main/main/nss-3.133.tar.gz
+compression=gzip
+md5=...
+sha256=...
+deps=nspr sqlite-libs zlib
+postinstall=
+conffiles=</pre>
+    <table width="100%" bgcolor="#FAFAFA" border="1" cellpadding="5" cellspacing="0">
+        <tr bgcolor="#E8E8E8"><td><b>Campo</b></td><td><b>Significado</b></td></tr>
+        <tr><td valign="top"><code>name</code>, <code>version</code>, <code>description</code></td><td valign="top">identificacao do pacote</td></tr>
+        <tr><td valign="top"><code>url</code>, <code>compression</code></td><td valign="top">onde baixar o tarball (gzip ou bzip2) e como descomprimir</td></tr>
+        <tr><td valign="top"><code>md5</code>, <code>sha256</code></td><td valign="top">checksums conferidos antes de instalar</td></tr>
+        <tr><td valign="top"><code>deps</code></td><td valign="top">outros pacotes, separados por espaco (usados por <code>-d</code>)</td></tr>
+        <tr><td valign="top"><code>postinstall</code></td><td valign="top">um comando, em uma linha, rodado depois da extracao (sem o caractere <code>=</code>)</td></tr>
+        <tr><td valign="top"><code>conffiles</code></td><td valign="top">arquivos de configuracao que nao devem ser sobrescritos</td></tr>
+    </table>
+    <p>As receitas ficam em <a href="https://www.github.com/LuuunodotXD/Dump-Package-Recipes" target="_blank">Dump-Package-Recipes</a> e os binarios em <a href="https://www.github.com/LuuunodotXD/Dump-Packages" target="_blank">Dump-Packages</a>. Pacotes muito grandes (como o Firefox) ficam nos <i>Releases</i> do GitHub.</p>
+
+    <hr size="1" noshade>
+    <p><font size="2"><a href="index.html">&lt;&lt; Wiki</a> | <a href="usuarios.html">&lt; Usuarios e grupos</a> | <a href="rede.html">Rede &gt;</a></font></p>
+    <p><font size="2"><i>Ultima atualizacao: 18/11/2026</i></font></p>
+
+</body>
+</html>
